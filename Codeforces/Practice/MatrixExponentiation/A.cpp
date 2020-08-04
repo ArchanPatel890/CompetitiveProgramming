@@ -12,9 +12,9 @@ void solve(int n, double p) {
     float p_happy = 1.0;
     while (n > 0) {
         if (n % 2 == 1) {
-            p_happy = p_happy * (1-p) + (1 - p_happy) * p;
+            p_happy = p_happy * (1-p) + (1-p_happy) * p;
         }
-        p = p * (1-p) + (1-p)*p;
+        p = p*(1-p) + (1-p)*p;
         n /= 2;
     }
 
