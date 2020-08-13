@@ -9,13 +9,13 @@
 using namespace std;
 
 
-void solve(vector<vector<char>>& g, int n, int m) {
+void solve(vector<vector<int>>& g, int n, int m) {
     if (min(n, m) > 3) {
         cout << "-1\n";
         return;
     }
 
-    
+
 }
 
 int main() {
