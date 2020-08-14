@@ -9,23 +9,22 @@
 using namespace std;
 
 void solve(vector<int>& a, int n) {
-    vector<int> b(n+1, 0);
-    for (int i = 1; i <= n; ++i) {
-        b[i] = b[i-1] + a[i-1];
+    unordered_map<long long, long long> cnt;
+    cnt[0]++;
+    long long sum = 0;
+    long long ans = 0;
+    int i;
+    REP(i, n) {
+        sum += a[i];
+        ans += cnt[sum - (i+1)];
+        cnt[sum - (i+1)]++;
     }
-
-    int cnt = 0;
-    for (int l = 1; l <= n; ++l) {
-        for (int i = 0; i+l <= n; ++i) {
-            if ((b[i+l] - b[i]) == l) ++cnt;
-        }
-    }
-
-    cout << cnt << endl;
+    
+    cout << ans << endl;
 }
 
-int main() {
-    freopen("input.txt","r",stdin);
+int main() {    
+    //freopen("input.txt","r",stdin);
     //freopen("output.txt","w",stdout);
     int t;
     cin >> t;

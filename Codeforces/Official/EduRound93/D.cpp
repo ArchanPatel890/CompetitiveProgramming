@@ -14,15 +14,28 @@ void solve(vector<int> r, vector<int> g, vector<int> b) {
     sort(r.begin(), r.end());
     sort(g.begin(), g.end());
     sort(b.begin(), b.end());
-    priority_queue<pv, vector<pv>> pq;
-    pq.push(make_pair(r.size(), r));
-    pq.push(make_pair())
-
-    cout << ans << endl;
+    int m = r.size(), n = g.size(), o = b.size();
+    vector<vector<vector<int>>>dp (m+1, vector<vector<int>>(n+1, vector<int>(o+1, 0)));
+    for (int i = 0; i <= m; ++i) {
+        for (int j = 0; j <= n; ++j) {
+            for (int k = 0; k <= o; ++k) {
+                if (i && j) {
+                    dp[i][j][k] = max(dp[i][j][k], dp[i-1][j-1][k] + r[i-1]*g[j-1]);
+                }
+                if (i && k) {
+                    dp[i][j][k] = max(dp[i][j][k], dp[i-1][j][k-1] + r[i-1]*b[k-1]);
+                }
+                if (j && k) {
+                    dp[i][j][k] = max(dp[i][j][k], dp[i][j-1][k-1] + g[j-1]*b[k-1]);
+                }
+            }
+        }
+    }
+    cout << dp[m][n][o] << endl;
 }
 
 int main() {
-    freopen("input.txt","r",stdin);
+    //freopen("input.txt","r",stdin);
     //freopen("output.txt","w",stdout);
    
     int r, g, b;
