@@ -113,8 +113,31 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		write(tc);
-	}
+		int n;
+        cin >> n;
+        int i;
+        unordered_map<char, int> cnt;
+        REP(i, n) {
+            string s;
+            cin >> s;
+            for (char c : s) {
+                cnt[c]++;
+            }
+        }
+        bool ok = true;
+        for (auto it = cnt.begin(); it != cnt.end(); ++it) {
+            if (it->second % n != 0) {
+                ok = false;
+                break;
+            }
+        }
+        if (!ok) {
+            cout << "NO\n";
+        }
+        else {
+            cout << "YES\n";
+        }
+    }
 	return 0;
 }
 /********  Main() Ends Here *************/

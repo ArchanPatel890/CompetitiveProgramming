@@ -97,6 +97,22 @@ template <typename T> inline T readInt()
 
 /******** User-defined Function *******/
 
+void solve(vector<int64>& a, int64 n) {
+	int64 cmax = pow(1e18, 1.0/n);
+    int64 ans = LLONG_MAX;
+    sort(a.begin(), a.end());
+    for (int64 i = 1; i <= cmax; ++i) {
+        int64 cost = 0;
+        int64 power = 1;
+        for (int j = 0; j < n; ++j) {
+            cost += abs(power - a[j]);
+            power *= i;
+        }
+        ans = min(ans, cost);
+    }
+
+    cout << ans << endl;
+}
 
 /**************************************/
 
@@ -109,12 +125,14 @@ int main()
 	//freopen("output.txt","w",stdout);
 	#endif
 
-	int tc;
-	tc = read(int);
-
-	while (tc--) {
-		write(tc);
-	}
+    int n;
+    cin >> n;
+    vector<int64> a(n);
+    int i;
+    REP(i, n) {
+        cin >> a[i];
+    }
+    solve(a, n);
 	return 0;
 }
 /********  Main() Ends Here *************/

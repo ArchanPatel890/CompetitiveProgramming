@@ -96,7 +96,60 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
+int gcd(int a, int b, int& x, int& y) {
+    x = 1, y = 0;
+    int x1 = 0, y1 = 1, a1 = a, b1 = b;
+    while (b1) {
+        int q = a1 / b1;
+        tie(x, x1) = make_tuple(x1, x - q * x1);
+        tie(y, y1) = make_tuple(y1, y - q * y1);
+        tie(a1, b1) = make_tuple(b1, a1 - q * b1);
+    }
+    return a1;
+}
 
+int mod_inv(int64 a, int64 m) {
+    int x, y;
+    int g = gcd(a, m, x, y);
+    if (g != 1) {
+        return 0;
+    }
+    else {
+        x = (x % m + m) % m;
+        return x;
+    }
+}
+
+void solve(vector<int64>& a, int64 n) {
+    if (n == 1) {
+        cout << "1 1\n";
+        cout << "1\n";
+        cout << "1 1\n";
+        cout << "-1\n";
+        cout << "1 1\n";
+        cout << -a[0] << endl;
+        return;
+    }
+
+    cout << 1 << " " << n-1 << endl;
+    int64 inv = mod_inv(n-1, n);
+    for (int64 i = 0; i < n-1; ++i) {
+        int64 x = (a[i] * inv) % n;
+        if (x < 0) x += n;
+        int64 add = -(n-1) * x;
+        a[i] += add;
+        cout << add << " ";
+    }
+    cout << endl;
+    cout << 1 << " " << n << endl;
+    for (int64 i = 0; i < n-1; ++i) {
+        cout << -a[i] << " ";
+    }
+    cout << n << endl;
+    a[n-1] += n;
+    cout << n << " " << n << endl;
+    cout << -a[n-1] << endl;
+}
 
 /**************************************/
 
@@ -109,12 +162,14 @@ int main()
 	//freopen("output.txt","w",stdout);
 	#endif
 
-	int tc;
-	tc = read(int);
-
-	while (tc--) {
-		write(tc);
-	}
+	int n;
+	n = read(int);
+    int i;
+    vector<int64> a(n);
+	REP(i, n) {
+        cin >> a[i];
+    }
+    solve(a, n);
 	return 0;
 }
 /********  Main() Ends Here *************/

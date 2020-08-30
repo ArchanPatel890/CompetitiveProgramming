@@ -96,8 +96,27 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
+void solve(vector<int>& a, int n) {
+    int sum = 0;
+    int cmax = 0;
+    for (int i : a) {
+        sum += i;
+        cmax = max(cmax, i);
+    }
 
-
+    int rest = sum - cmax;
+    if (cmax > rest) {
+        cout << "T\n";
+    }
+    else if (sum % 2 == 1) {
+        cout << "T\n";
+    }
+    else {
+        cout << "HL\n";
+    }
+    
+    cout << flush;
+}
 /**************************************/
 
 
@@ -113,7 +132,14 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		write(tc);
+		int n;
+        cin >> n;
+        vector<int> a(n);
+        int i;
+        REP(i, n) {
+            cin >> a[i];
+        }
+        solve(a, n);
 	}
 	return 0;
 }

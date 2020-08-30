@@ -99,7 +99,22 @@ template <typename T> inline T readInt()
 
 
 /**************************************/
-
+void solve(int64 l, int64 r, int64 m) {
+	int64 range = r-l;
+	for (int64 a = l; a <= r; ++a) {
+		int64 n = (m+range) / a;
+		if (n > 0 && abs(m-n*a) <= range) {
+			int64 x = m - n*a;
+			if (x < 0) {	
+				printf("%lld %lld %lld\n", a, x+r, r);
+			}
+			else {
+				printf("%lld %lld %lld\n", a, x+l, l);	
+			}
+			return;
+		}
+	}
+} 
 
 /********** Main()  function **********/
 int main()
@@ -111,9 +126,10 @@ int main()
 
 	int tc;
 	tc = read(int);
-
 	while (tc--) {
-		write(tc);
+		int64 l, r, m;
+		cin >> l >> r >> m;
+		solve(l, r, m);
 	}
 	return 0;
 }
