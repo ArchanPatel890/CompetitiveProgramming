@@ -8,40 +8,39 @@
 
 using namespace std;
 
-void solve(string a, string b) {
+void solve(string a, string b, int alphabet) {
     int n = a.size();
-    unordered_map<char, char> mapping;
+    vector<vector<int>> g(alphabet);
     for (int i = 0; i < n; ++i) {
         if (a[i] > b[i]) {
             cout << "-1" << "\n";
             return;
         }    
-        if (mapping.count(a[i]) == 0 || mapping[a[i]] > b[i]) {
-            mapping[a[i]] = b[i];
-            a[i] = b[i];
-            --i;
+        else if (a[i] < b[i]) {
+            g[a[i]-'a'].push_back(b[i]-'a');
+            g[b[i]-'a'].push_back(a[i]-'a');
         }
     }
 
-    for (int i = 0; i < n; ++i) {
-        char curr = a[i];
-        while (mapping.count(curr) && curr != mapping[curr]) {
-            curr = mapping[curr];
-            if (curr == b[i]) break;
+    vector<int> color(alphabet, 0);
+    function<void(int)> dfs = [&](int u) {
+        if (color[u]) return;
+        color[u] = 1;
+        for (int v : g[u]) {
+            if (!color[v])
+                dfs(v);
         }
-        if (curr != b[i]) {
-            cout << "-1\n";
-            return;
-        }
-    }
+    };
 
-    int cnt = 0;
-    for (int i = 0; i < 20; ++i) {
-        if (mapping.count(char(i+'a')) && mapping[(char) (i+'a')] != (char)i+'a') {
-            ++cnt;
+    int ans = alphabet;
+    for (int i = 0; i < alphabet; ++i) {
+        if (!color[i]) {
+            dfs(i);
+            --ans;
         }
     }
-    cout << cnt << "\n";
+    
+    cout << ans << endl;
 }
 
 int main() {
@@ -55,7 +54,7 @@ int main() {
         cin >> n;
         string a, b;
         cin >> a >> b;
-        solve(a, b);
+        solve(a, b, 20);
     }
     return 0;
 }

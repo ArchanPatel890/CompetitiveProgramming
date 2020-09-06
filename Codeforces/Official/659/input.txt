@@ -1,4 +1,4 @@
-6
+5
 3
 aab
 bcc
@@ -11,9 +11,6 @@ tsr
 4
 aabd
 cccd
-2
-aa
-bc
 5
-eabcde
-gbcdee
+abcbd
+bcdda
