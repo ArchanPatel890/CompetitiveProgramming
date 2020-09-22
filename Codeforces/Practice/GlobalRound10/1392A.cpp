@@ -9,17 +9,28 @@
 using namespace std;
 
 void solve(vector<int>& a, int n) {
-    if ((a[0] + a[1]) <= a[n-1]) {
-        cout << "1 2 " << n << "\n";
+    bool equal = true;
+    for (int i = 0; i < n-1; ++i) {
+        if (a[i] != a[i+1]) {
+            equal = false;
+            break;
+        }
+    }
+
+    if (equal) {
+        cout << n << endl;
     }
     else {
-        cout << "-1\n";
+        cout << 1 << endl;
     }
 }
 
 int main() {
-    //freopen("input.txt","r",stdin);
-    //freopen("output.txt","w",stdout);
+    #ifndef ONLINE_JUDGE
+	freopen("input.txt","r",stdin);
+	//freopen("output.txt","w",stdout);
+	#endif
+
     int t;
     cin >> t;
 
