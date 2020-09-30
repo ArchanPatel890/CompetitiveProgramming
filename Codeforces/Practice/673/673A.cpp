@@ -21,15 +21,12 @@ using namespace std;
 #define RFOR(i, j, k, in) for (int i=j ; i>=k ; i-=in)
 #define REP(i, j) FOR(i, 0, j, 1)
 #define RREP(i, j) RFOR(i, j, 0, 1)
-#define FOREACH(it, l) for (auto it = l.begin(); it != l.end(); it++)
-#define IN(A, B, C) assert( B <= A && A <= C)
 #define all(cont) cont.begin(), cont.end()
 #define rall(cont) cont.end(), cont.begin()
-#define sz(v) int(v.size())
-#define ft first
-#define sc second
-#define mp make_pair
-#define pb push_back
+#define FOREACH(it, l) for (auto it = l.begin(); it != l.end(); it++)
+#define IN(A, B, C) assert( B <= A && A <= C)
+#define MP make_pair
+#define PB push_back
 #define INF (int)1e9
 #define EPS 1e-9
 #define PI 3.1415926535897932384626433832795
@@ -99,7 +96,16 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-
+void solve(int n, int x) {
+	if (n == 1 || n == 2) {
+		cout << 1 << endl;
+		return;
+	}
+	
+	n -= 2;
+	int ans = n % x != 0 ? n/x + 2 : n/x + 1;
+	cout << ans << endl;
+}
 
 /**************************************/
 
@@ -116,7 +122,9 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		write(tc);
+		int n, x;
+		cin >> n >> x;
+		solve(n, x);
 	}
 	return 0;
 }

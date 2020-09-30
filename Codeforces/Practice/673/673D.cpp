@@ -5,6 +5,7 @@
  
 /********   All Required Header Files ********/
 #include <bits/stdc++.h>
+#include <unordered_set>
 
 using namespace std;
 
@@ -21,19 +22,16 @@ using namespace std;
 #define RFOR(i, j, k, in) for (int i=j ; i>=k ; i-=in)
 #define REP(i, j) FOR(i, 0, j, 1)
 #define RREP(i, j) RFOR(i, j, 0, 1)
-#define FOREACH(it, l) for (auto it = l.begin(); it != l.end(); it++)
-#define IN(A, B, C) assert( B <= A && A <= C)
 #define all(cont) cont.begin(), cont.end()
 #define rall(cont) cont.end(), cont.begin()
-#define sz(v) int(v.size())
-#define ft first
-#define sc second
-#define mp make_pair
-#define pb push_back
+#define FOREACH(it, l) for (auto it = l.begin(); it != l.end(); it++)
+#define IN(A, B, C) assert( B <= A && A <= C)
+#define MP make_pair
+#define PB push_back
 #define INF (int)1e9
 #define EPS 1e-9
 #define PI 3.1415926535897932384626433832795
-#define MOD 1000000007
+#define MOD 998244353;
 #define read(type) readInt<type>()
 const double pi=acos(-1.0);
 typedef pair<int, int> pii;
@@ -97,9 +95,27 @@ template <typename T> inline T readInt()
 #define debug(x) cerr << #x << "=" << (x) <<'\n'
 /**********************************************/
 
-
 /******** User-defined Function *******/
 
+
+void solve(vector<int64> &a, int n)  {
+	unordered_set<int64> sums;
+	int64 prefix = 0;
+	int64 ans = 0;
+	sums.insert(0);
+	for (int64 i : a) {
+		prefix += i;
+		if (sums.count(prefix)) {
+			++ans;
+			sums.clear();
+			sums.insert(0);
+			prefix = i;
+		}
+			
+		sums.insert(prefix);
+	}
+	cout << ans << endl;
+}
 
 /**************************************/
 
@@ -112,12 +128,13 @@ int main()
 	//freopen("output.txt","w",stdout);
 	#endif
 
-	int tc;
-	tc = read(int);
-
-	while (tc--) {
-		write(tc);
+	int n;
+	cin >> n;
+	vector<int64> a(n);
+	for (int64 &i : a) {
+		cin >> i;
 	}
+	solve(a, n);
 	return 0;
 }
 /********  Main() Ends Here *************/

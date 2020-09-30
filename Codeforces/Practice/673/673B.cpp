@@ -21,15 +21,12 @@ using namespace std;
 #define RFOR(i, j, k, in) for (int i=j ; i>=k ; i-=in)
 #define REP(i, j) FOR(i, 0, j, 1)
 #define RREP(i, j) RFOR(i, j, 0, 1)
-#define FOREACH(it, l) for (auto it = l.begin(); it != l.end(); it++)
-#define IN(A, B, C) assert( B <= A && A <= C)
 #define all(cont) cont.begin(), cont.end()
 #define rall(cont) cont.end(), cont.begin()
-#define sz(v) int(v.size())
-#define ft first
-#define sc second
-#define mp make_pair
-#define pb push_back
+#define FOREACH(it, l) for (auto it = l.begin(); it != l.end(); it++)
+#define IN(A, B, C) assert( B <= A && A <= C)
+#define MP make_pair
+#define PB push_back
 #define INF (int)1e9
 #define EPS 1e-9
 #define PI 3.1415926535897932384626433832795
@@ -99,7 +96,44 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
+int getPowTwo(int n) 
+{ 
+    if (n == 0) 
+        return 0; 
+  
+    int msb = 0; 
+    n = n / 2; 
+    while (n != 0) { 
+        n = n / 2; 
+        msb++; 
+    } 
+  
+    return (1 << msb); 
+} 
 
+void solve(vvi& t, int n, int m) {
+	if (m % 2 == 1 || m <= 0) {
+		cout << "NO" << endl;
+		return;
+	}
+
+	bool ok = false;
+	for (int i = 0; i < n; ++i) {
+		int b = t[2*i][1];
+		int c = t[2*i+1][0];
+		if (b == c) {
+			ok = true;
+			break;
+		}
+	}
+
+	if (ok) {
+		cout << "YES" << endl;
+	}
+	else {
+		cout << "NO" << endl;
+	}
+}
 
 /**************************************/
 
@@ -116,7 +150,13 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		write(tc);
+		int n, m;
+		cin >> n >> m;
+		vvi t(2*n, vi(2, 0));
+		for (auto& ti : t) {
+			cin >> ti[0] >> ti[1];
+		}
+		solve(t, n, m);
 	}
 	return 0;
 }

@@ -99,8 +99,40 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
+int64 sum(int64 n) {
+	int curr = 0;
+	while (n > 0) {
+		curr += n % 10;
+		n /= 10;
+	}
 
+	return curr;
+}
 
+void solve(vi& a, vi& b, int n) {
+	int mxwin = min(a[0], b[1]) + min(a[1], b[2]) + min(a[2], b[0]);
+	int mnwin = INT_MAX;
+	vii ord;
+	ord.push_back({0, 0});
+	ord.push_back({0, 2});
+	ord.push_back({1, 1});
+	ord.push_back({1, 0});
+	ord.push_back({2, 2});
+	ord.push_back({2, 1});
+	sort(all(ord));
+	do {
+		vector<int> a1 = a, b1 = b;
+		for (int i = 0; i < ord.size(); i++) {
+			int cnt = min(a1[ord[i].ft], b1[ord[i].sc]);
+			a1[ord[i].ft] -= cnt;
+			b1[ord[i].sc] -= cnt;			
+		}
+		int cur = min(a1[0], b1[1]) + min(a1[1], b1[2]) + min(a1[2], b1[0]);
+		mnwin = min(mnwin, cur);
+	} while(next_permutation(all(ord)));
+	int ans2 = min(a[0], b[1]) + min(a[1], b[2]) + min(a[2], b[0]);
+	cout << mnwin << " " << mxwin << endl;
+}
 /**************************************/
 
 
@@ -112,12 +144,13 @@ int main()
 	//freopen("output.txt","w",stdout);
 	#endif
 
-	int tc;
-	tc = read(int);
-
-	while (tc--) {
-		write(tc);
-	}
+	int n;
+	cin >> n;
+	vi a(3), b(3);
+	for (int i = 0; i < 3; i++) cin >> a[i];
+	for (int i = 0; i < 3; i++) cin >> b[i];
+	solve(a, b, n);
+	
 	return 0;
 }
 /********  Main() Ends Here *************/
