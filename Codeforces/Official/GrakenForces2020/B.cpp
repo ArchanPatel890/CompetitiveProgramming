@@ -36,26 +36,18 @@ using namespace std;
 #define MOD 1000000007
 #define read(type) readInt<type>()
 const double pi=acos(-1.0);
-typedef long int int32;
-typedef unsigned long int uint32;
-typedef long long int ll;
-typedef unsigned long long int ull;
-typedef long double ld;
 typedef pair<int, int> pii;
-typedef pair<ll, ll> pll;
 typedef vector<int> vi;
-typedef vector<ll> vll;
-typedef vector<ld> vld;
 typedef vector<string> vc;
-typedef vector<pii> vpii;
-typedef vector<pll> vpll;
+typedef vector<pii> vii;
 typedef vector<vi> vvi;
-typedef vector<vll> vvll;
-typedef vector<vpii> vvpii;
-typedef vector<vpll> vvpll;
 typedef map<int,int> mpii;
 typedef set<int> seti;
 typedef multiset<int> mseti;
+typedef long int int32;
+typedef unsigned long int uint32;
+typedef long long int int64;
+typedef unsigned long long int  uint64;
 
 /****** Template of some basic operations *****/
 template<typename T, typename U> inline void amin(T &x, U y) { if (y < x) x = y; }
@@ -107,7 +99,9 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
+void solve(vector<int64> &a, int64 n, int64 k) {
 
+}
 
 /**************************************/
 
@@ -124,7 +118,13 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		write(tc);
+		int64 n, k;
+        cin >> n;
+        vector<int64> a(n);
+        for (int64& i : a) {
+            cin >> i;
+        }
+        solve(a, n, k);
 	}
 	return 0;
 }

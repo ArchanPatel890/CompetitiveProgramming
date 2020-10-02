@@ -107,7 +107,21 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
+void solve(ll n) {
+    if (n % 2 == 0) {
+        cout << (n/2) << " " << (n/2) << endl;
+        return;
+    }
+    ll sq = (ll) sqrt(n) + 1;
+    for (ll i = 3; i <= sq; i += 2) {
+        if (n % i == 0) {
+            cout << (n/i) << " " << (n - n/i) << endl;
+            return;
+        }
+    }
 
+    cout << 1 << " " << (n-1) << endl;
+}
 
 /**************************************/
 
@@ -124,7 +138,9 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		write(tc);
+		ll n;
+        cin >> n;
+        solve(n);
 	}
 	return 0;
 }

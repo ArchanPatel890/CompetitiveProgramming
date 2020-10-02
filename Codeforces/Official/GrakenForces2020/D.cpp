@@ -36,26 +36,18 @@ using namespace std;
 #define MOD 1000000007
 #define read(type) readInt<type>()
 const double pi=acos(-1.0);
-typedef long int int32;
-typedef unsigned long int uint32;
-typedef long long int ll;
-typedef unsigned long long int ull;
-typedef long double ld;
 typedef pair<int, int> pii;
-typedef pair<ll, ll> pll;
 typedef vector<int> vi;
-typedef vector<ll> vll;
-typedef vector<ld> vld;
 typedef vector<string> vc;
-typedef vector<pii> vpii;
-typedef vector<pll> vpll;
+typedef vector<pii> vii;
 typedef vector<vi> vvi;
-typedef vector<vll> vvll;
-typedef vector<vpii> vvpii;
-typedef vector<vpll> vvpll;
 typedef map<int,int> mpii;
 typedef set<int> seti;
 typedef multiset<int> mseti;
+typedef long int int32;
+typedef unsigned long int uint32;
+typedef long long int int64;
+typedef unsigned long long int  uint64;
 
 /****** Template of some basic operations *****/
 template<typename T, typename U> inline void amin(T &x, U y) { if (y < x) x = y; }
@@ -107,7 +99,64 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
+int dist(pii a, pii b) {
+    return abs(a.first - b.first) + abs(a.second - b.second);
+}
 
+int dist_h(pii a, pii b) {
+    return min(abs(a.first - b.first), abs(a.second - b.second));
+}
+
+void solve(vii rob, vii s, int n, int m) {
+    vii hull;
+    for (int i = 0; i < m; ++i) {
+        bool ok = true;
+        for (int j = 0; j < m; ++j) {
+            if (j == i) continue;
+            if (s[i].ft < s[j].ft && s[i].sc <= s[j].sc) {
+                ok = false;
+                break;
+            }
+        }
+        if (ok) {
+            hull.pb(s[i]);
+        }
+    }
+    sort(hull.begin(), hull.end());
+    vii corners;
+    for (int i = 0; i < hull.size()-1; ++i) {
+        corners.pb({hull[i].first, hull[i+1].second});
+    }
+    int mx_x = 0;
+    int mx_y = 0;
+    int mx = 0;
+    for (auto r : rob) {
+        pii mn_c;
+        int min_c = INT_MAX;
+        for (auto c : corners) {
+            if (r.first <= c.first && r.second <= c.second) {
+                if (dist(c, r) < min_c) {
+                    mn_c = c;
+                    min_c = dist(r, c);
+                }
+            }
+        }
+
+        pii mn_h;
+        int min_h = INT_MAX;
+        for (auto h : hull) {
+            if (r.first <= h.first && r.second <= h.second) {
+                if (dist(h, r) < min_h) {
+                    mn_h = h;
+                    min_h = dist_h(h, r);
+                }
+            }
+        }
+        mx = max(mx, dist(mn_h, r) + 1);
+        mx_x = max(mx_x, mn_c.first - r.first + 1);
+        mx_y = max(mx_y, mn_c.second - r.second + 1);
+    }
+}
 
 /**************************************/
 
@@ -120,12 +169,16 @@ int main()
 	//freopen("output.txt","w",stdout);
 	#endif
 
-	int tc;
-	tc = read(int);
+	int n, m;
+    cin >> n >> m;
+    vii r(n), s(m);
+    for (auto &i : r) {
+        cin >> i.first >> i.second;
+    }
+    for (auto &i : s) {
+        cin >> i.first >> i.second;
+    }
 
-	while (tc--) {
-		write(tc);
-	}
-	return 0;
+    solve(r, s, n, m);
 }
 /********  Main() Ends Here *************/

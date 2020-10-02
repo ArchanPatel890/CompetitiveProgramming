@@ -36,26 +36,18 @@ using namespace std;
 #define MOD 1000000007
 #define read(type) readInt<type>()
 const double pi=acos(-1.0);
-typedef long int int32;
-typedef unsigned long int uint32;
-typedef long long int ll;
-typedef unsigned long long int ull;
-typedef long double ld;
 typedef pair<int, int> pii;
-typedef pair<ll, ll> pll;
 typedef vector<int> vi;
-typedef vector<ll> vll;
-typedef vector<ld> vld;
 typedef vector<string> vc;
-typedef vector<pii> vpii;
-typedef vector<pll> vpll;
+typedef vector<pii> vii;
 typedef vector<vi> vvi;
-typedef vector<vll> vvll;
-typedef vector<vpii> vvpii;
-typedef vector<vpll> vvpll;
 typedef map<int,int> mpii;
 typedef set<int> seti;
 typedef multiset<int> mseti;
+typedef long int int32;
+typedef unsigned long int uint32;
+typedef long long int int64;
+typedef unsigned long long int  uint64;
 
 /****** Template of some basic operations *****/
 template<typename T, typename U> inline void amin(T &x, U y) { if (y < x) x = y; }
@@ -107,7 +99,36 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-
+void solve(vi &a, vi &b, vi &c, int n) {
+    vi p;
+    p.push_back(a[0]);
+    for (int i = 1; i < n-1; ++i) {
+        if (p[i-1] != a[i]) {
+            p.push_back(a[i]);
+        }
+        else if (p[i-1] != b[i]) {
+            p.pb(b[i]);
+        }
+        else {
+            p.pb(c[i]);
+        }
+    }
+    int f = p.front();
+    int back = p.back();
+    if (f != a[n-1] && back != a[n-1]) {
+        p.pb(a[n-1]);
+    }
+    else if (f != b[n-1] && back != b[n-1]) {
+        p.pb(b[n-1]);
+    }
+    else {
+        p.pb(c[n-1]);
+    }
+    for (int i : p) {
+        cout << i << " ";
+    }
+    cout << endl;
+}
 
 /**************************************/
 
@@ -124,7 +145,19 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		write(tc);
+		int n;
+        cin >> n;
+        vi a(n), b(n), c(n);
+        for (int& i : a) {
+            cin >> i;
+        }
+        for (int& i : b) {
+            cin >> i;
+        }
+        for (int& i : c) {
+            cin >> i;
+        }
+        solve(a, b, c, n);
 	}
 	return 0;
 }

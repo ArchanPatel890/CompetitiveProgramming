@@ -107,7 +107,34 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
+void solve(vi& a, int n) {
+    int l = 0;
+    int r = n-1;
+    while (a[l] == l+1 && l < n) {
+        ++l;
+    }
+    if (l == n) {
+        cout << "0" << endl;
+        return;
+    }
+    while(a[r] == r+1 && l < r && r >= 0) {
+        --r;
+    }
+    bool ok = true;
+    for (int i = l; i < r; ++i) {
+        if (a[i] == i+1) {
+            ok = false;
+            break;
+        }
+    }
 
+    if (ok) {
+        cout << "1" << endl;
+    }
+    else {
+        cout << "2" << endl;
+    }
+}
 
 /**************************************/
 
@@ -124,7 +151,13 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		write(tc);
+		int n;
+        cin >> n;
+        vi a(n);
+        for(int &i: a) {
+            cin >> i;
+        }
+        solve(a, n);
 	}
 	return 0;
 }

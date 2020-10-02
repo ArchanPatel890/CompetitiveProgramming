@@ -36,26 +36,18 @@ using namespace std;
 #define MOD 1000000007
 #define read(type) readInt<type>()
 const double pi=acos(-1.0);
-typedef long int int32;
-typedef unsigned long int uint32;
-typedef long long int ll;
-typedef unsigned long long int ull;
-typedef long double ld;
 typedef pair<int, int> pii;
-typedef pair<ll, ll> pll;
 typedef vector<int> vi;
-typedef vector<ll> vll;
-typedef vector<ld> vld;
 typedef vector<string> vc;
-typedef vector<pii> vpii;
-typedef vector<pll> vpll;
+typedef vector<pii> vii;
 typedef vector<vi> vvi;
-typedef vector<vll> vvll;
-typedef vector<vpii> vvpii;
-typedef vector<vpll> vvpll;
 typedef map<int,int> mpii;
 typedef set<int> seti;
 typedef multiset<int> mseti;
+typedef long int int32;
+typedef unsigned long int uint32;
+typedef long long int int64;
+typedef unsigned long long int  uint64;
 
 /****** Template of some basic operations *****/
 template<typename T, typename U> inline void amin(T &x, U y) { if (y < x) x = y; }
@@ -107,7 +99,46 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-
+void solve(vector<int64> &a, int64 n, int64 d) {
+    int64 s_l = 1;
+    int64 s_r = 1;
+    double time = 0;
+    double time_l = 0;
+    double time_r = 0;
+    double d_l = 0;
+    double d_r = d;
+    int l = 0;
+    int r = n-1;
+    while (l <= r) {
+        time_l = (double)(a[l] - d_l) / s_l;
+        time_r = (double)(d_r - a[r]) / s_r;
+        if (abs(time_l - time_r) <= EPS) {
+            time += time_l;
+            d_l = a[l];
+            d_r = a[r];
+            s_l++;
+            s_r++;
+            l++;
+            r--;
+        }
+        else if (time_l < time_r) {
+            time += time_l;
+            d_l = a[l];
+            d_r -= time_l * s_r;
+            s_l++;
+            l++;
+        }
+        else {
+            time += time_r;
+            d_r = a[r];
+            d_l += time_r * s_l;
+            s_r++;
+            r--;
+        }
+    }
+    time += (d_r - d_l) / (s_l + s_r);
+    printf("%0.15f\n", time);
+}
 
 /**************************************/
 
@@ -124,7 +155,13 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		write(tc);
+		int64 n, l;
+        cin >> n >> l;
+        vector<int64> a(n);
+        for (auto &i: a) {
+            cin >> i;
+        }
+        solve(a, n, l);
 	}
 	return 0;
 }

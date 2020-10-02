@@ -107,7 +107,31 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
+void solve(vll &a, ll n) {
+    vll b;
+    for (int i = 0; i < n; i += 2) {
+        b.push_back(a[i]);
+    }
+    for (int i = 1; i < n; i += 2) {
+        b.push_back(a[i]);
+    }
+    for (int i = 0; i < n; ++i) {
+        b.push_back(b[i]);
+    }
+    ll mxsum = 0;
+    int wsize = (n+1)/2;
+    for (int i = 0; i < wsize; ++i) {
+        mxsum += b[i];
+    }
+    ll sum = mxsum;
+    for (int i = 1; i <= b.size()-wsize; ++i) {
+        sum -= b[i-1];
+        sum += b[i-1+wsize];
+        mxsum = max(mxsum, sum);
+    }
 
+    cout << mxsum << endl;
+}
 
 /**************************************/
 
@@ -120,12 +144,12 @@ int main()
 	//freopen("output.txt","w",stdout);
 	#endif
 
-	int tc;
-	tc = read(int);
-
-	while (tc--) {
-		write(tc);
-	}
-	return 0;
+    int n;
+    cin >> n;
+    vll a(n);
+    for (auto &i : a) {
+        cin >> i;
+    }
+    solve(a, n);
 }
 /********  Main() Ends Here *************/
