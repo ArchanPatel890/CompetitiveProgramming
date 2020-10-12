@@ -107,7 +107,19 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-
+void solve(int n) {
+    if (n <= 1) {
+        cout << 1 << endl;
+        return;
+    }
+    cout << 2 << endl;
+    int curr = n;
+    cout << n << " " << n-1 << endl;
+    while (curr >= 3) {
+        cout << curr << " " << curr-2 << endl;
+        --curr;
+    }
+}
 
 /**************************************/
 
@@ -124,7 +136,9 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		write(tc);
+		int n;
+        cin >> n;
+        solve(n);
 	}
 	return 0;
 }

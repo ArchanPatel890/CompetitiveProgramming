@@ -107,7 +107,14 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-
+void solve(vll &a, int n, int k) {
+    sort(a.begin(), a.end());
+    ll ans = a[n-1];
+    for (int i = n-k-1; i < n-1; ++i) {
+        ans += a[i];
+    }
+    cout << ans << endl;
+}
 
 /**************************************/
 
@@ -124,7 +131,13 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		write(tc);
+		int n, k;
+        cin >> n >> k;
+        vll a(n);
+        for (auto &i : a) {
+            cin >> i;
+        }
+        solve(a, n, k);
 	}
 	return 0;
 }

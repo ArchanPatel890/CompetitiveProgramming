@@ -107,7 +107,30 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-
+void solve(string s, int n) {
+    vector<int> cur;
+    for(int i = 1; i < n; ++i) {
+        if (s[i] == s[i-1]) cur.push_back(i);
+    }
+    reverse(all(cur));
+    int ans = 0;
+    for(int i = 0; i < n;) {
+        ans++;
+        while(!cur.empty() && cur.back() < i) {
+            cur.pop_back();
+        }
+        if (cur.empty()) {
+            while(n > 1 && s[n-1] == s[n-2]) n--;
+            n--;
+        } else {
+            cur.pop_back();
+        }
+        if (i >= n) break;
+        i++;
+        while(i < n && s[i] == s[i-1]) i++;
+    }
+    cout << ans << "\n";
+}
 
 /**************************************/
 
@@ -124,7 +147,11 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		write(tc);
+		int n;
+        cin >> n;
+        string s;
+        cin >> s;
+        solve(s, n);
 	}
 	return 0;
 }

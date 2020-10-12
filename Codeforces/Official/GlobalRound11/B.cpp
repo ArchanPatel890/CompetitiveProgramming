@@ -107,7 +107,66 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
+void solve(string s, ll n, ll k) {
+    ll cl = 0;
+    ll score = 0;
+    for (int i = 0; i < n; ++i) {
+        if (s[i] == 'W') {
+            if (i > 0 && s[i-1] == 'W') {
+                score += 2;
+            }
+            else {
+                score++;
+            }
+        }
+        if (s[i] == 'L') {
+            cl++;
+        }
+    }
+    if (score == 0) {
+        score += max(0ll, (min(n, k) - 1ll)) * 2 + (k > 0 ? 1 : 0);
+        cout << score << endl;
+        return;
+    }
 
+    int l = 0;
+    int r = n-1;
+    while (s[l] != 'W' && l < n-1) {
+        ++l;
+    }
+    while(s[r] != 'W' && l < r && r > 0) {
+        --r;
+    }
+
+    multiset<ll> gaps;
+    while (l < r) {
+        ll cnt = 0;
+        while (l < r && s[l] == 'L') {
+            cnt++;
+            l++;
+        }
+        l++;
+        if (cnt) {
+            gaps.insert(cnt);
+        }
+    }
+    
+    FOREACH(it, gaps) {
+        int amt = min(k, *it);
+        if (amt < *it) {
+            score += amt * 2;
+        }
+        else {
+            score += amt * 2 + 1;
+        }
+        k -= amt;
+        cl -= amt;
+        if (k <= 0) break;
+    }
+
+    score += min(k, cl)*2;
+    cout << score << endl;
+}
 
 /**************************************/
 
@@ -124,7 +183,11 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		write(tc);
+		int n, k;
+        cin >> n >> k;
+        string s;
+        cin >> s;
+        solve(s, n, k);
 	}
 	return 0;
 }

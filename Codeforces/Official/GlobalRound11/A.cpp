@@ -110,7 +110,27 @@ template <typename T> inline T readInt()
 
 
 /**************************************/
+void solve(vll &a, int n) {
+    ll sum = 0;
+    for (ll i : a) sum += i;
+    if (sum == 0) {
+        cout << "NO" << endl;
+        return;
+    }
 
+    cout << "YES" << endl;
+    if (sum < 0) {
+        sort(all(a));
+    }
+    else {
+        sort(all(a), greater<ll>());
+    }
+
+    for (ll i : a) {
+        cout << i << " ";
+    }
+    cout << endl;  
+}
 
 /********** Main()  function **********/
 int main()
@@ -124,7 +144,13 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		write(tc);
+		int n;
+        cin >> n;
+        vll a(n);
+        for (ll &i : a) {
+            cin >> i;
+        }
+        solve(a, n);
 	}
 	return 0;
 }

@@ -107,7 +107,31 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
+int dist(pii a, pii b) {
+    return (abs(a.ft - b.ft) + abs(a.sc - b.sc));
+}
 
+void solve(vector<pair<int, pii>> c, int r, int n) {
+    vi dp(n+1, 0);
+    vi visited(n+1, 0);
+    visited[0] = 1;
+    for (int i = 1; i <= n; ++i) {
+        for (int j = max(0, i-2000); j < i; ++j) {
+            int d = dist(c[i].sc, c[j].sc);
+            int dt = (c[i].ft - c[j].ft);
+            if (d <= dt && visited[j]) {
+                dp[i] = max(dp[i], dp[j]+1);
+            }
+        }
+        if (dp[i]) visited[i] = 1;
+    }
+
+    int mx = 0;
+    for (int a : dp) {
+        mx = max(mx, a);
+    }
+    cout << mx << endl;
+}
 
 /**************************************/
 
@@ -120,12 +144,18 @@ int main()
 	//freopen("output.txt","w",stdout);
 	#endif
 
-	int tc;
-	tc = read(int);
 
-	while (tc--) {
-		write(tc);
-	}
+    int r, n;
+    cin >> r >> n;
+    vector<pair<int, pii>> c;
+    c.push_back({0, {1, 1}});
+    int i;
+    REP(i, n) {
+        int t, x, y;
+        cin >> t >> x >> y;
+        c.push_back({t, {x, y}});
+    }
+    solve(c, r, n);
 	return 0;
 }
 /********  Main() Ends Here *************/

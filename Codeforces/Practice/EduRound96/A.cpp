@@ -107,7 +107,39 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
+void solve(int n) {
+    vector<int> dp(n+1, 0);
+    dp[0] = 1;
+    for (int i = 1; i <= n; ++i) {
+        if (i-3 >= 0) dp[i] += dp[i-3];
+        if (i-5 >= 0) dp[i] += dp[i-5];
+        if (i-7 >= 0) dp[i] += dp[i-7];
+    }
 
+    if (!dp[n]) {
+        cout << -1 << endl;
+        return;
+    }
+
+    int p = n;
+    int three = 0, five = 0, seven = 0;
+    while (p > 0) {
+        if (p-3 >= 0 && dp[p-3]) {
+            ++three;
+            p -= 3;
+        }
+        else if (p-5 >= 0 && dp[p-5]) {
+            ++five;
+            p -= 5;
+        }
+        else if (p-7 >= 0 && dp[p-7]) {
+            ++seven;
+            p -= 7;
+        }
+    }
+
+    printf("%d %d %d\n", three, five, seven);
+}
 
 /**************************************/
 
@@ -124,7 +156,9 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		write(tc);
+		int n;
+        cin >> n;
+        solve(n);
 	}
 	return 0;
 }
