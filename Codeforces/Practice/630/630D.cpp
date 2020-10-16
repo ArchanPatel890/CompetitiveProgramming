@@ -107,8 +107,11 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve(vi &a, int n, int k) {
-	
+void solve(int k) {
+	int x = pow(2, 17);
+	printf("%d %d\n", 2, 3);
+	printf("%d %d %d\n", x^k, x, 0);
+	printf("%d %d %d\n", k, x^k, k);
 }
 
 /**************************************/
@@ -122,13 +125,9 @@ int main()
 	//freopen("output.txt","w",stdout);
 	#endif
 
-	int tc;
-	tc = read(int);
-
-	while (tc--) {
-		int n, k;
-		cin >> n >> k;
-	}
+	int k;
+	cin >> k;
+	solve(k);
 	return 0;
 }
 /********  Main() Ends Here *************/

@@ -107,9 +107,31 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve(vi &a, int n, int k) {
-	
+void solve(int a, int b, int c, int d, pii start, pii xc, pii yc) {
+	int nleft = a - b;
+	int ndown = c - d;
+
+	int mleft = start.ft - xc.ft;
+	int mright = xc.sc - start.ft;
+	int mup = yc.sc - start.sc;
+	int mdown = start.sc - yc.ft;
+
+	if ((a || b) && (!mleft && !mright)
+		|| (nleft > 0 && mleft < nleft)
+		|| (nleft < 0 && mright < -nleft)
+		|| (c || d) && (!mup && !mdown)
+		|| (ndown > 0 && mdown < ndown)
+		|| (ndown < 0 && mup < -ndown)
+		) 
+	{
+		cout << "No" << endl;
+	}
+	else {
+		cout << "Yes" << endl;
+	}
 }
+
+
 
 /**************************************/
 
@@ -126,8 +148,13 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		int n, k;
-		cin >> n >> k;
+		int a, b, c, d;
+		pii start, xc, yc;
+		cin >> a >> b >> c >> d;
+		cin >> start.ft >> start.sc;
+		cin >> xc.ft >> yc.ft;
+		cin >> xc.sc >> yc.sc;
+		solve(a, b, c, d, start, xc, yc);
 	}
 	return 0;
 }

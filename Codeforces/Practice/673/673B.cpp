@@ -21,30 +21,41 @@ using namespace std;
 #define RFOR(i, j, k, in) for (int i=j ; i>=k ; i-=in)
 #define REP(i, j) FOR(i, 0, j, 1)
 #define RREP(i, j) RFOR(i, j, 0, 1)
-#define all(cont) cont.begin(), cont.end()
-#define rall(cont) cont.end(), cont.begin()
 #define FOREACH(it, l) for (auto it = l.begin(); it != l.end(); it++)
 #define IN(A, B, C) assert( B <= A && A <= C)
-#define MP make_pair
-#define PB push_back
+#define all(cont) cont.begin(), cont.end()
+#define rall(cont) cont.end(), cont.begin()
+#define sz(v) int(v.size())
+#define ft first
+#define sc second
+#define mp make_pair
+#define pb push_back
 #define INF (int)1e9
 #define EPS 1e-9
 #define PI 3.1415926535897932384626433832795
-#define MOD 1000000007
 #define read(type) readInt<type>()
+const int MOD = 1000000007;
 const double pi=acos(-1.0);
+typedef long int int32;
+typedef unsigned long int uint32;
+typedef long long int ll;
+typedef unsigned long long int ull;
+typedef long double ld;
 typedef pair<int, int> pii;
+typedef pair<ll, ll> pll;
 typedef vector<int> vi;
+typedef vector<ll> vll;
+typedef vector<ld> vld;
 typedef vector<string> vc;
-typedef vector<pii> vii;
+typedef vector<pii> vpii;
+typedef vector<pll> vpll;
 typedef vector<vi> vvi;
+typedef vector<vll> vvll;
+typedef vector<vpii> vvpii;
+typedef vector<vpll> vvpll;
 typedef map<int,int> mpii;
 typedef set<int> seti;
 typedef multiset<int> mseti;
-typedef long int int32;
-typedef unsigned long int uint32;
-typedef long long int int64;
-typedef unsigned long long int  uint64;
 
 /****** Template of some basic operations *****/
 template<typename T, typename U> inline void amin(T &x, U y) { if (y < x) x = y; }
@@ -96,43 +107,45 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-int getPowTwo(int n) 
-{ 
-    if (n == 0) 
-        return 0; 
-  
-    int msb = 0; 
-    n = n / 2; 
-    while (n != 0) { 
-        n = n / 2; 
-        msb++; 
-    } 
-  
-    return (1 << msb); 
-} 
+void solve(vi &a, int n, int t) {
+	vi b(a);
+	sort(b.begin(), b.end());
+	mseti black;
+	int l = 0;
+	int r = n-1;
+	while (l < r) {
+		int sum = b[l] + b[r];
+		if (sum < t) {
+			black.insert(b[l]);
+			++l;
+		}
+		else if (sum > t) {
+			--r;
+		}
+		else {
+			black.insert(b[l]);
+			if (b[l] != b[r]) {
+				while(l < r && b[l] == b[l+1]) {
+					++l;
+					black.insert(b[l]);
+				}
 
-void solve(vvi& t, int n, int m) {
-	if (m % 2 == 1 || m <= 0) {
-		cout << "NO" << endl;
-		return;
-	}
-
-	bool ok = false;
-	for (int i = 0; i < n; ++i) {
-		int b = t[2*i][1];
-		int c = t[2*i+1][0];
-		if (b == c) {
-			ok = true;
-			break;
+				while(l < r && b[r] == b[r-1]) --r;
+			}
+			++l;
+			--r;
 		}
 	}
-
-	if (ok) {
-		cout << "YES" << endl;
+	for (int i : a) {
+		if (black.count(i)) {
+			black.erase(black.find(i));
+			cout << "0 ";
+		}
+		else {
+			cout << "1 ";
+		}
 	}
-	else {
-		cout << "NO" << endl;
-	}
+	cout << endl;
 }
 
 /**************************************/
@@ -150,13 +163,13 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		int n, m;
-		cin >> n >> m;
-		vvi t(2*n, vi(2, 0));
-		for (auto& ti : t) {
-			cin >> ti[0] >> ti[1];
+		int n, t;
+		cin >> n >> t;
+		vi a(n);
+		for (int &i : a) {
+			cin >> i;
 		}
-		solve(t, n, m);
+		solve(a, n, t);
 	}
 	return 0;
 }

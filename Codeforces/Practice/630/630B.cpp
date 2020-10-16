@@ -107,8 +107,48 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve(vi &a, int n, int k) {
-	
+int gcd(const int &a, const int &b) { return b ? a : gcd(b, a % b); }
+
+// Generates prime numbers up to n in O(n) time
+vector<int> generate_primes_linear_time(int n) {
+    vector<int> lp(n + 1);
+    vector<int> primes;
+    for (int i = 2; i <= n; ++i) {
+        if (lp[i] == 0) {
+            lp[i] = i;
+            primes.push_back(i);
+        }
+        for (int j = 0; j < primes.size() && primes[j] <= lp[i] && i * primes[j] <= n; ++j)
+            lp[i * primes[j]] = primes[j];
+    }
+    return primes;
+}
+
+const int MAXN = 1000;
+void solve(vi &a, int n) {
+	int maxp = floor(sqrt(1000));
+	auto primes = generate_primes_linear_time(maxp);
+	int nprimes = primes.size();
+	vi colorp(nprimes, 0);
+	vi color(n);
+	int mx = 0;
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < nprimes; ++j) {
+			if (a[i] % primes[j] == 0) {
+				if (!colorp[j]) {
+					colorp[j] = mx+1;
+					++mx;
+				}
+				color[i] = colorp[j];
+				break;
+			}
+		}
+	}
+	cout << mx << endl;
+	for (int c : color) {
+		cout << c << " ";
+	}
+	cout << endl;
 }
 
 /**************************************/
@@ -126,8 +166,13 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		int n, k;
-		cin >> n >> k;
+		int n;
+		cin >> n;
+		vi a(n);
+		for (int &i : a) {
+			cin >> i;
+		}
+		solve(a, n);
 	}
 	return 0;
 }

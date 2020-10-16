@@ -107,8 +107,76 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve(vi &a, int n, int k) {
-	
+tuple<vector<int>, vector<int>> create_sets(int n) {
+    vector<int> res(n);
+    iota(res.begin(), res.end(), 0);
+    vector<int> rank(n);
+    return make_tuple(res, rank);
+}
+
+int root(vector<int> &p, int x) {
+    return x == p[x] ? x : (p[x] = root(p, p[x]));
+}
+
+void unite(vector<int> &p, vector<int> &rank, int a, int b) {
+    a = root(p, a);
+    b = root(p, b);
+    if (a == b)
+        return;
+    if (rank[a] < rank[b])
+        swap(a, b);
+    if (rank[a] == rank[b])
+        ++rank[a];
+    p[b] = a;
+}
+
+int getDiff(vector<char> &group) {
+	sort(all(group));
+	int n = group.size();
+	int mx = 0;
+	int cnt = 1;
+	for (int i = 0; i < n-1; ++i) {
+		if (group[i] == group[i+1]) {
+			++cnt;
+		}
+		else {
+			cnt = 1;
+		}
+		amax(mx, cnt);
+	}
+	return n - mx;
+}
+
+void solve(int n, int k, string s) {
+	vi set, rank;
+	tie(set, rank) = create_sets(n);
+	vector<bool> visited(n, false);
+	function<void(int, int)> dfs = [&](int p, int u) {
+		if (visited[u]) return;
+		visited[u] = true;
+		unite(set, rank, p, u);
+		if (u-k >= 0) {
+			dfs(p, u-k);
+		}
+		if (u+k < n) {
+			dfs(p, u+k);
+		}
+		dfs(p, n-1-u);
+	};
+
+	for (int i = 0; i < n; ++i) {
+		if (!visited[i]) dfs(i, i);
+	}
+
+	vector<vector<char>> groups(n);
+	for (int i = 0; i < n; ++i) {
+		groups[set[i]].push_back(s[i]);
+	}
+	int ans = 0;
+	for (auto group : groups) {
+		ans += getDiff(group);
+	}
+	cout << ans << endl;
 }
 
 /**************************************/
@@ -128,6 +196,9 @@ int main()
 	while (tc--) {
 		int n, k;
 		cin >> n >> k;
+		string s;
+		cin >> s;
+		solve(n, k, s);
 	}
 	return 0;
 }

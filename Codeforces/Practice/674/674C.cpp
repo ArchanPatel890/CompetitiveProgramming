@@ -21,41 +21,30 @@ using namespace std;
 #define RFOR(i, j, k, in) for (int i=j ; i>=k ; i-=in)
 #define REP(i, j) FOR(i, 0, j, 1)
 #define RREP(i, j) RFOR(i, j, 0, 1)
-#define FOREACH(it, l) for (auto it = l.begin(); it != l.end(); it++)
-#define IN(A, B, C) assert( B <= A && A <= C)
 #define all(cont) cont.begin(), cont.end()
 #define rall(cont) cont.end(), cont.begin()
-#define sz(v) int(v.size())
-#define ft first
-#define sc second
-#define mp make_pair
-#define pb push_back
+#define FOREACH(it, l) for (auto it = l.begin(); it != l.end(); it++)
+#define IN(A, B, C) assert( B <= A && A <= C)
+#define MP make_pair
+#define PB push_back
 #define INF (int)1e9
 #define EPS 1e-9
 #define PI 3.1415926535897932384626433832795
+#define MOD 1000000007
 #define read(type) readInt<type>()
-const int MOD = 1000000007;
 const double pi=acos(-1.0);
-typedef long int int32;
-typedef unsigned long int uint32;
-typedef long long int ll;
-typedef unsigned long long int ull;
-typedef long double ld;
 typedef pair<int, int> pii;
-typedef pair<ll, ll> pll;
 typedef vector<int> vi;
-typedef vector<ll> vll;
-typedef vector<ld> vld;
 typedef vector<string> vc;
-typedef vector<pii> vpii;
-typedef vector<pll> vpll;
+typedef vector<pii> vii;
 typedef vector<vi> vvi;
-typedef vector<vll> vvll;
-typedef vector<vpii> vvpii;
-typedef vector<vpll> vvpll;
 typedef map<int,int> mpii;
 typedef set<int> seti;
 typedef multiset<int> mseti;
+typedef long int int32;
+typedef unsigned long int uint32;
+typedef long long int int64;
+typedef unsigned long long int  uint64;
 
 /****** Template of some basic operations *****/
 template<typename T, typename U> inline void amin(T &x, U y) { if (y < x) x = y; }
@@ -107,8 +96,16 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve(vi &a, int n, int k) {
-	
+void solve(int n) {
+	if (n <= 1) {
+		cout << 0 << endl;
+		return;
+	}
+	int ans = INT_MAX;
+	for (int i = 1; i * i <= n; ++i) {
+		ans = min(ans, i - 1 + (n - i + i - 1) / i);
+	}
+	cout << ans << endl;
 }
 
 /**************************************/
@@ -126,8 +123,9 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		int n, k;
-		cin >> n >> k;
+		int n;
+		cin >> n;
+		solve(n);
 	}
 	return 0;
 }

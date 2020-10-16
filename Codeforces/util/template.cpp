@@ -107,7 +107,9 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
+void solve() {
 
+}
 
 /**************************************/
 
@@ -125,6 +127,7 @@ int main()
 
 	while (tc--) {
 		write(tc);
+		solve();
 	}
 	return 0;
 }
