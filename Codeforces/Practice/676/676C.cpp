@@ -107,8 +107,12 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
-
+void solve(string s) {
+	int n = s.size();
+	printf("3\n");
+	printf("R %d\n", n-1);
+	printf("L %d\n", n);
+	printf("L %d\n", 2);
 }
 
 /**************************************/
@@ -122,13 +126,9 @@ int main()
 	//freopen("output.txt","w",stdout);
 	#endif
 
-	int tc;
-	tc = read(int);
-
-	while (tc--) {
-		
-		solve();
-	}
+	string s;
+	cin >> s;
+	solve(s);
 	return 0;
 }
 /********  Main() Ends Here *************/

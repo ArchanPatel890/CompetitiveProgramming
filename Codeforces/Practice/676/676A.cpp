@@ -107,8 +107,10 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
-
+void solve(int a, int b) {
+	int x = a & b;
+	int ans = (a ^ x) + (b ^ x);
+	cout << ans << endl;
 }
 
 /**************************************/
@@ -126,8 +128,9 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int a, b;
+		cin >> a >> b;
+		solve(a, b);
 	}
 	return 0;
 }

@@ -107,8 +107,20 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
-
+void solve(vi &a, int n) {
+	// negative
+	for (int i = 0; i < n; ++i) {
+		if (i % 2 == 0) {
+			a[i] = -abs(a[i]);
+		}
+		else {
+			a[i] = abs(a[i]);
+		}
+	}
+	for (int i : a) {
+		cout << i << " ";
+	}
+	cout << endl;
 }
 
 /**************************************/
@@ -126,8 +138,13 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n;
+		cin >> n;
+		vi a(n);
+		for (auto &i : a) {
+			cin >> i;
+		}
+		solve(a, n);
 	}
 	return 0;
 }

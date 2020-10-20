@@ -107,8 +107,48 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+void solve(vector<vector<char>> &g, int n) {
+	char tr = g[0][1];
+	char tl = g[1][0];
+	char br = g[n-2][n-1];
+	char bl = g[n-1][n-2];
 
+	vpii flip;
+	if (tr == tl) {
+		if (bl == tr) {
+			flip.push_back({n, n-1});
+		}
+		if (br == tr) {
+			flip.push_back({n-1, n});
+		}
+	}
+	else if (bl == br) {
+		if (tr == bl) {
+			flip.push_back({1, 2});
+		}
+		if (tl == bl) {
+			flip.push_back({2, 1});
+		}
+	}
+	else {
+		if (tr == '1') {
+			flip.push_back({1, 2});
+		}
+		else {
+			flip.push_back({2, 1});
+		}
+		if (br == '0') {
+			flip.push_back({n-1, n});
+		}
+		else {
+			flip.push_back({n, n-1});
+		}
+	}
+
+	cout << flip.size() << endl;
+	for (auto p : flip) {
+		cout << p.ft << " " << p.sc << endl;
+	}
 }
 
 /**************************************/
@@ -126,8 +166,15 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n;
+		cin >> n;
+		vector<vector<char>> g(n, vector<char>(n));
+		for (auto &row : g) {
+			for (auto &c : row) {
+				cin >> c;
+			}
+		}
+		solve(g, n);
 	}
 	return 0;
 }

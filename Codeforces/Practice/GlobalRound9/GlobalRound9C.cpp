@@ -107,12 +107,16 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
-
+void solve(vi &a, int n) {
+	if (a[0] > a[n-1]) {
+		cout << "NO" << endl;
+	}
+	else {
+		cout << "YES" << endl;
+	}
 }
 
 /**************************************/
-
 
 /********** Main()  function **********/
 int main()
@@ -126,8 +130,13 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n;
+		cin >> n;
+		vi a(n);
+		for (int &i : a) {
+			cin >> i;
+		}
+		solve(a, n);
 	}
 	return 0;
 }

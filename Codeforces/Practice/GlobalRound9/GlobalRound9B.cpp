@@ -107,8 +107,36 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
 
+void solve(vvi &a, int n, int m) {
+	bool ok = true;
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < m; ++j) {
+			int adj = 0;
+			if (i-1 >= 0) adj++;
+			if (j+1 < m) adj++;
+			if (i+1 < n) adj++;
+			if (j-1 >= 0) adj++;
+			if (a[i][j] > adj) {
+				ok = false;
+				break;
+			}
+			a[i][j] = adj;
+		}
+		if (!ok) break;
+	}
+
+	if (!ok) {
+		cout << "NO" << endl;
+		return;
+	}
+	cout << "YES" << endl;
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < m; ++j) {
+			cout << a[i][j] << " ";
+		}
+		cout << endl;
+	}
 }
 
 /**************************************/
@@ -126,8 +154,15 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n, m;
+		cin >> n >> m;
+		vvi a(n, vi(m));
+		for (auto &i : a) {
+			for (auto &ij : i) {
+				cin >> ij;
+			}
+		}
+		solve(a, n, m);
 	}
 	return 0;
 }

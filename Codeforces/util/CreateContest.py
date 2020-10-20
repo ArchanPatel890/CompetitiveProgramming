@@ -8,8 +8,8 @@ parser = argparse.ArgumentParser(
     description="Creates a new CodeForces contest directory. Adds IO files and templates files.")
 parser.add_argument("name", type=str, nargs="?", help="The name or number of the contest.")
 parser.add_argument("nProblems", type=int, help="Number of problems in the contest.")
-parser.add_argument("--official", "-off", nargs="?", help="If the contest is official.")
-parser.add_argument("--practice", "-prac", nargs="?", help="If the contest is practice (default).")
+parser.add_argument("--official", "-off", action='store_true', help="If the contest is official.")
+parser.add_argument("--practice", "-prac", action='store_true', help="If the contest is practice (default).")
 parser.add_argument("--output", "-o", nargs="?", help="Output directory of contest (default practice dir)")
 parser.add_argument("--prefix", nargs="?", help="Prefix for the contest submission files.")
 parser.add_argument("--template", "-t", nargs="?", default="template.cpp", help="Template to use for problems.")
@@ -36,6 +36,7 @@ def TryMakeDir(folder: str):
 practice_dir = os.path.join(curr_dir, "..", "Practice")
 official_dir = os.path.join(curr_dir, "..", "Official")
 category_dir = practice_dir
+
 if args.official:
     category_dir = official_dir
 
