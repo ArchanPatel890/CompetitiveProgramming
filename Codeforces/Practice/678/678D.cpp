@@ -9,7 +9,6 @@
 using namespace std;
 
 /*******  All Required define Pre-Processors and typedef Constants *******/
-// IO
 #define SCD(t) scanf("%d",&t)
 #define SCLD(t) scanf("%ld",&t)
 #define SCLLD(t) scanf("%lld",&t)
@@ -17,8 +16,6 @@ using namespace std;
 #define SCS(t) scanf("%s",t)
 #define SCF(t) scanf("%f",&t)
 #define SCLF(t) scanf("%lf",&t)
-#define read(type) readInt<type>()
-// Array / Iteration
 #define MEM(a, b) memset(a, (b), sizeof(a))
 #define FOR(i, j, k, in) for (int i=j ; i<k ; i+=in)
 #define RFOR(i, j, k, in) for (int i=j ; i>=k ; i-=in)
@@ -26,7 +23,6 @@ using namespace std;
 #define RREP(i, j) RFOR(i, j, 0, 1)
 #define FOREACH(it, l) for (auto it = l.begin(); it != l.end(); it++)
 #define IN(A, B, C) assert( B <= A && A <= C)
-// Function Aliases
 #define all(cont) cont.begin(), cont.end()
 #define rall(cont) cont.end(), cont.begin()
 #define sz(v) int(v.size())
@@ -34,13 +30,12 @@ using namespace std;
 #define sc second
 #define mp make_pair
 #define pb push_back
-// Constants
 #define INF (int)1e9
 #define EPS 1e-9
 #define PI 3.1415926535897932384626433832795
+#define read(type) readInt<type>()
 const int MOD = 1000000007;
 const double pi=acos(-1.0);
-// typedefs aliases for common types
 typedef long int int32;
 typedef unsigned long int uint32;
 typedef long long int ll;
@@ -64,17 +59,6 @@ typedef set<int> seti;
 typedef set<ll> setll;
 typedef multiset<int> mseti;
 typedef multiset<ll> msetll;
-typedef unordered_map<int, int> umapii;
-typedef unordered_map<ll, ll> umapll;
-// Timing
-clock_t start_time = clock();
-#define current_time fixed<<setprecision(6)<<(ld)(clock()-start_time)/CLOCKS_PER_SEC
-
-/****** Input / Output Redirection to Files ******/
-#define file_input freopen("input.txt","r",stdin)
-#define file_output freopen("output.txt","w",stdout)
-#define file_io file_input; file_output
-#define fast_io ios_base::sync_with_stdio(0);cin.tie(0)
 
 /****** Template of some basic operations *****/
 template<typename T, typename U> inline void amin(T &x, U y) { if (y < x) x = y; }
@@ -126,7 +110,35 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+tuple<ll, ll, ll> dfsLeafCount(int u, int p, vi &seen, vi &a, vvi &g) {
+	if (seen[u]) {
+		return;
+	}
+	seen[u] = 1;
+	ll total = 0;
+	ll cnt = 0;
+	ll mx = a[u];
+	ll neighbors = 0;
+	for (auto v : g[u]) {
+		if (v == p) continue;
+		auto [ltotal, lcnt, lmx] = dfsLeafCount(v, u, seen, a, g);
+		if (lmx > mx) {
+			total += mx;
+		}
+		total += ltotal;
+		cnt += lcnt;
+		neighbors++;
+	}
+
+
+
+	if (neighbors == 0) cnt = 1;
+	seen[u] = 2;
+	return {total, cnt, mx};
+}
+
+void solve(vvll &g, vll &a, int n) {
+	mseti leaves;
 
 }
 
@@ -137,17 +149,29 @@ void solve() {
 int main()
 {
 	#ifndef ONLINE_JUDGE
-	file_input;
-	//file_output;
+	freopen("input.txt","r",stdin);
+	//freopen("output.txt","w",stdout);
 	#endif
-	fast_io;
 
 	int tc;
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n;
+		cin >> n;
+		vvll g(n+1);
+
+		for (int i = 2; i <= n; ++i) {
+			int u;
+			cin >> u;
+			g[u].push_back(i);
+		}
+
+		vll a(n);
+		for (auto &i : a) {
+			cin >> i;
+		}
+		solve(g, a, n);
 	}
 	return 0;
 }
