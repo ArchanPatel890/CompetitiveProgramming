@@ -74,6 +74,7 @@ clock_t start_time = clock();
 #define file_input freopen("input.txt","r",stdin)
 #define file_output freopen("output.txt","w",stdout)
 #define file_io file_input; file_output
+#define fast_io ios_base::sync_with_stdio(0);cin.tie(0)
 
 /****** Template of some basic operations *****/
 template<typename T, typename U> inline void amin(T &x, U y) { if (y < x) x = y; }
@@ -125,8 +126,15 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
-
+void solve(int l, int r) {
+	int ans = r+1;
+	int bound = (ans % 2 == 0) ? ans/2 : (ans+1)/2;
+	if (l < bound) {
+		cout << "NO" << endl;
+	}
+	else {
+		cout << "YES" << endl;
+	}
 }
 
 /**************************************/
@@ -142,10 +150,10 @@ int main()
 
 	int tc;
 	tc = read(int);
-
 	while (tc--) {
-		
-		solve();
+		int l, r;
+		cin >> l >> r;
+		solve(l, r);
 	}
 	return 0;
 }

@@ -74,6 +74,7 @@ clock_t start_time = clock();
 #define file_input freopen("input.txt","r",stdin)
 #define file_output freopen("output.txt","w",stdout)
 #define file_io file_input; file_output
+#define fast_io ios_base::sync_with_stdio(0);cin.tie(0)
 
 /****** Template of some basic operations *****/
 template<typename T, typename U> inline void amin(T &x, U y) { if (y < x) x = y; }
@@ -125,8 +126,28 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+void solve(vll &t, int n) {
+	sort(all(t));
+	vvll dp(n, vll(n*2+1, -1));
+	for (int start = 1; start <= n*2; ++start)
+		dp[0][start] = abs(t[0] - start);
 
+	for (int i = 1; i < n; ++i) {
+		for (int start = i+1; start <= n*2; ++start) {
+			dp[i][start] = abs(t[i] - start);
+			ll mn = INT_MAX;
+			for (int j = start-1; j >= 0; --j) {
+				if (dp[i-1][j] != -1) amin(mn, dp[i-1][j]);
+			}
+			dp[i][start] += mn;
+		}
+	}
+
+	int ans = INT_MAX;
+	for (int start = n; start <= n*2; ++start) {
+		amin(ans, dp[n-1][start]);
+	}
+	cout << ans << endl;
 }
 
 /**************************************/
@@ -144,8 +165,13 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n;
+		cin >> n;
+		vll t(n);
+		for (auto &i : t) {
+			cin >> i;	
+		}
+		solve(t, n);
 	}
 	return 0;
 }

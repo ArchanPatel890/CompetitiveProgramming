@@ -74,6 +74,7 @@ clock_t start_time = clock();
 #define file_input freopen("input.txt","r",stdin)
 #define file_output freopen("output.txt","w",stdout)
 #define file_io file_input; file_output
+#define fast_io ios_base::sync_with_stdio(0);cin.tie(0)
 
 /****** Template of some basic operations *****/
 template<typename T, typename U> inline void amin(T &x, U y) { if (y < x) x = y; }
@@ -125,8 +126,30 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
-
+void solve(vi &a, int n) {
+	int depth = 0;
+	int level_size = 1;
+	int occupied = 0;
+	int curr_level_size = 0;
+	for (int i = 1; i < n; ++i) {
+		++occupied;
+		++curr_level_size;
+		// Add additional nodes to level 
+		while (i < n-1 && a[i] < a[i+1]) {
+			curr_level_size++;
+			i++;
+		}
+			
+		// Make new level
+		if (i < n && occupied == level_size) {
+			level_size = curr_level_size;
+			curr_level_size = 0;
+			occupied = 0;
+			depth++;
+		}	
+	}
+	if (curr_level_size > 0) depth++;
+	cout << depth << endl;
 }
 
 /**************************************/
@@ -144,8 +167,13 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n;
+		cin >> n;
+		vi a(n);
+		for (auto &i : a) {
+			cin >> i;
+		}
+		solve(a, n);
 	}
 	return 0;
 }
