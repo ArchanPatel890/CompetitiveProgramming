@@ -51,13 +51,11 @@ typedef pair<ll, ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ld> vld;
-typedef vector<char> vc;
-typedef vector<string> vs;
+typedef vector<string> vc;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 typedef vector<vi> vvi;
 typedef vector<vll> vvll;
-typedef vector<vc> vvc;
 typedef vector<vpii> vvpii;
 typedef vector<vpll> vvpll;
 typedef map<int,int> mpii;
@@ -128,8 +126,18 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
-
+void solve(vi &a, int n, int k) {
+	sort(all(a));
+	int large_fill = n - (n+1)/2 + 1;
+	int small_fill = k - large_fill;
+	int r = n*k;
+	ll ans = 0;
+	while (k) {
+		r -= large_fill;
+		ans += a[r];
+		--k;
+	}
+	cout << ans << endl;
 }
 
 /**************************************/
@@ -147,8 +155,14 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n, k;
+		cin >> n >> k;
+		int cnt = n*k;
+		vi a(cnt);
+		for (auto &i : a) {
+			cin >> i;
+		}
+		solve(a, n, k);
 	}
 	return 0;
 }

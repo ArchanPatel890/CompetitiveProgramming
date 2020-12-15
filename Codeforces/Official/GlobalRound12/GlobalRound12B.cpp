@@ -51,13 +51,11 @@ typedef pair<ll, ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ld> vld;
-typedef vector<char> vc;
-typedef vector<string> vs;
+typedef vector<string> vc;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 typedef vector<vi> vvi;
 typedef vector<vll> vvll;
-typedef vector<vc> vvc;
 typedef vector<vpii> vvpii;
 typedef vector<vpll> vvpll;
 typedef map<int,int> mpii;
@@ -128,8 +126,26 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+int dist(pii a, pii b) {
+	return abs(a.ft - b.ft) + abs(a.sc - b.sc);
+}
 
+void solve(vpii &balls, int n, int k) {
+	for (auto &pi : balls) {
+		bool ok = true;
+		for (auto &pj : balls) {
+			if (dist(pj, pi) > k) {
+				ok = false;
+				break;
+			}
+		}
+		if (ok) {
+			cout << 1 << endl;
+			return;
+		}
+	}
+
+	cout << -1 << endl;
 }
 
 /**************************************/
@@ -147,8 +163,14 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n = read(int);
+		int k = read(int);
+		vpii balls(n);
+		for (auto &p : balls) {
+			p.ft = read(int);
+			p.sc = read(int);
+		}
+		solve(balls, n, k);
 	}
 	return 0;
 }

@@ -51,13 +51,11 @@ typedef pair<ll, ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ld> vld;
-typedef vector<char> vc;
-typedef vector<string> vs;
+typedef vector<string> vc;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 typedef vector<vi> vvi;
 typedef vector<vll> vvll;
-typedef vector<vc> vvc;
 typedef vector<vpii> vvpii;
 typedef vector<vpll> vvpll;
 typedef map<int,int> mpii;
@@ -128,8 +126,75 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+#ifdef _MSC_VER
+int __builtin_clz(unsigned x) {
+    int bit = 31;
+    while (bit >= 0 && (x & (1 << bit)) == 0)
+        --bit;
+    return 31 - bit;
+}
+#endif
 
+template <class T, class F = function<T(const T &, const T &)>>
+struct SparseTable {
+    vector<vector<T>> t;
+    F func;
+
+    SparseTable(const vector<T> &a, F f) : t(32 - __builtin_clz(a.size())), func(std::move(f)) {
+        t[0] = a;
+        for (size_t i = 1; i < t.size(); i++) {
+            t[i].resize(a.size() - (1 << i) + 1);
+            for (size_t j = 0; j < t[i].size(); j++)
+                t[i][j] = func(t[i - 1][j], t[i - 1][j + (1 << (i - 1))]);
+        }
+    }
+
+    T get(int from, int to) const {
+        assert(0 <= from && from <= to && to <= (int)t[0].size() - 1);
+        int k = 31 - __builtin_clz(to - from + 1);
+        return func(t[k][from], t[k][to - (1 << k) + 1]);
+    }
+};
+
+void solve(vi &a, int n) {
+	SparseTable<int> st(a, [](int i, int j) { return min(i, j); });
+	vector<int> cnt(n+1, 0);
+	string s(n, '0');
+	for (int i : a) {
+		if (i > 0  && i <= n) cnt[i]++;
+	}
+	bool ok = true;
+	for (int i = 1; i <= n; ++i) {
+		if (cnt[i] != 1) {
+			ok = false;
+			break;
+		}
+	}
+	if (ok) s[0] = '1';
+
+	int l = 0;
+	int r = n-1;
+	int curr = 1;
+	while (l <= r) {
+		if (st.get(l, r) == curr) {
+			s[r-l] = '1';
+		}
+		else {
+			break;
+		}
+		if (l < r && st.get(l, r-1) == curr+1) {
+			--r;
+		}
+		else if (l < r && st.get(l+1, r) == curr+1) {
+			++l;
+		}
+		else {
+			break;
+		}
+		++curr;
+	}
+
+	cout << s << endl;
 }
 
 /**************************************/
@@ -147,8 +212,12 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n = read(int);
+		vi a(n);
+		for (auto &i : a) {
+			i = read(int);
+		}
+		solve(a, n);
 	}
 	return 0;
 }

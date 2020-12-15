@@ -51,13 +51,11 @@ typedef pair<ll, ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ld> vld;
-typedef vector<char> vc;
-typedef vector<string> vs;
+typedef vector<string> vc;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 typedef vector<vi> vvi;
 typedef vector<vll> vvll;
-typedef vector<vc> vvc;
 typedef vector<vpii> vvpii;
 typedef vector<vpll> vvpll;
 typedef map<int,int> mpii;
@@ -128,10 +126,54 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+class sstack {
+	struct Node {
+		Node* prev;
+		Node* next;
+		int* arr;
+		int idx;
+	};
 
-}
+private:
+	size_t chunk_size;
+	Node* top = nullptr;
 
+	Node* createNode() {
+		Node* node = new Node();
+		node->arr = new int[chunk_size];
+		node->idx = 0;
+		node->prev = top;
+		node->next = nullptr;
+		return node;
+	}
+
+public:
+	sstack(size_t chunk_size) : chunk_size(chunk_size){}
+	void push(int n) {
+		if (!top) {
+			top = createNode();
+		}
+		if (top->idx == chunk_size) {
+			Node* node = createNode();
+			top->next = node;
+			top = node;
+		}
+		top->arr[top->idx] = n;
+		top->idx++;
+	}
+
+	int pop() {
+		if (!top || (top->idx == 0 && !top->prev)) return -100;
+
+		if (top->idx == 0) {
+			top = top->prev;
+			delete top->next;
+		}
+		int ans = top->arr[top->idx-1];
+		top->idx--;
+		return ans;
+	}
+};
 /**************************************/
 
 
@@ -143,13 +185,14 @@ int main()
 	//file_output;
 	#endif
 
-	int tc;
-	tc = read(int);
-
-	while (tc--) {
-		
-		solve();
+	sstack s(2);
+	for (int i = 0; i < 10; ++i) {
+		s.push(i);
 	}
+	for (int i = 0; i < 10; ++i) {
+		cout << s.pop() << endl;
+	}
+	cout << s.pop() << endl;
 	return 0;
 }
 /********  Main() Ends Here *************/

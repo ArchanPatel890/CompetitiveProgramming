@@ -51,13 +51,11 @@ typedef pair<ll, ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ld> vld;
-typedef vector<char> vc;
-typedef vector<string> vs;
+typedef vector<string> vc;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 typedef vector<vi> vvi;
 typedef vector<vll> vvll;
-typedef vector<vc> vvc;
 typedef vector<vpii> vvpii;
 typedef vector<vpll> vvpll;
 typedef map<int,int> mpii;
@@ -128,8 +126,46 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+void solve(vll &w, ll n, ll W) {
+	vpll items(n);
+	for (int i = 0; i < n; ++i) {
+		items[i] = {w[i], i+1};
+	}
+	sort(all(items));
 
+	ll upper = W;
+	ll lower = (W+1)/2;
+	int l = 0;
+	int r = n-1;
+	while(r >= 0 && items[r].ft > W) --r;
+	if (r < 0) {
+		cout << "-1" << endl;
+		return;
+	}
+
+	if (items[r].first > lower) {
+		cout << 1 << endl;
+		cout << items[r].second << endl;
+		return;
+	}
+
+	ll sum = 0;
+	while (l <= r && sum < lower) {
+		sum += items[l].first;
+		++l;
+	}
+	if (sum >= lower) {
+		cout << l << endl;
+		REP(i, l) {
+			cout << items[i].second << " ";
+		}
+		cout << endl;
+		return;
+	}
+	else {
+		cout << "-1" << endl;
+		return;
+	}
 }
 
 /**************************************/
@@ -147,8 +183,13 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		ll n = read(ll);
+		ll W = read(ll);
+		vll w(n);
+		for (auto &i : w) {
+			i = read(ll);
+		}
+		solve(w, n, W);
 	}
 	return 0;
 }

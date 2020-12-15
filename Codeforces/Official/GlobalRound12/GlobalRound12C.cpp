@@ -51,13 +51,11 @@ typedef pair<ll, ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ld> vld;
-typedef vector<char> vc;
-typedef vector<string> vs;
+typedef vector<string> vc;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 typedef vector<vi> vvi;
 typedef vector<vll> vvll;
-typedef vector<vc> vvc;
 typedef vector<vpii> vvpii;
 typedef vector<vpll> vvpll;
 typedef map<int,int> mpii;
@@ -128,8 +126,32 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+void solve(vector<vector<char>> &g, int n) {
+	int cnt = 0;
+	for (auto &r : g) {
+		for (auto &rc : r) {
+			if (rc != '.') ++cnt;
+		}
+	}
 
+	int changes = cnt/3;
+	
+	for (int i = 2; i < n; i+=3) {
+		int r = 0;
+		int c = i;
+		for (int i = 0; i < n; ++i) {
+			if (g[r][c] == 'X' &&  changes) {
+				g[r][c] = 'O';
+			}
+		}
+	}
+
+	for (auto &r : g) {
+		for (auto &rc : r) {
+			cout << rc;
+		}
+		cout << endl;
+	}
 }
 
 /**************************************/
@@ -147,8 +169,14 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n = read(int);
+		vector<vector<char>> grid(n, vector<char>(n));
+		for (auto &r : grid) {
+			for (auto &rc : r) {
+				cin >> rc;
+			}
+		}
+		solve(grid, n);
 	}
 	return 0;
 }

@@ -51,13 +51,11 @@ typedef pair<ll, ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ld> vld;
-typedef vector<char> vc;
-typedef vector<string> vs;
+typedef vector<string> vc;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 typedef vector<vi> vvi;
 typedef vector<vll> vvll;
-typedef vector<vc> vvc;
 typedef vector<vpii> vvpii;
 typedef vector<vpll> vvpll;
 typedef map<int,int> mpii;
@@ -125,11 +123,116 @@ template <typename T> inline T readInt()
 /***************** Debugging ******************/
 #define debug(x) cerr << #x << "=" << (x) <<'\n'
 /**********************************************/
+void fix_square(int r, int c, vvi &g, vvi &moves) {
+	int n = g.size();
+	int m = g[0].size();
 
+	vpii zeros, ones;
+	if (g[r][c] == 0) zeros.push_back({r, c});
+	else ones.push_back({r, c});
+	if (g[r][c+1] == 0) zeros.push_back({r, c+1});
+	else ones.push_back({r, c+1});
+	if (g[r+1][c] == 0) zeros.push_back({r+1, c});
+	else ones.push_back({r+1, c});
+	if (g[r+1][c+1] == 0) zeros.push_back({r+1, c+1});
+	else ones.push_back({r+1, c+1});
+
+	if (ones.size() == 0) return;
+	// Delay fixing the entire square
+	if (ones.size() == 4 && (r < n-2 || c < m-2)) {
+		int ex = -1;
+		if (r < n-2) {
+			if (g[r+2][c] == 1) {
+				ex = 2;
+			}
+			else if (g[r+2][c+1] == 1) {
+				ex = 3;
+			}
+		}
+		if (ex < 0 && c < m-2) {
+			if (g[r][c+2] == 1) {
+				ex = 1;
+			}
+			else if (g[r+1][c+2] == 1) {
+				ex = 3;
+			}
+		}
+		if (ex > 0) {
+			vi move;
+			for (int i = 0; i < ones.size(); ++i) {
+				if (i != ex) {
+					move.push_back(ones[i].first);
+					move.push_back(ones[i].second);
+					g[ones[i].ft][ones[i].sc] = 0;
+				}
+			}
+			moves.push_back(move);
+			return;
+		}
+	}
+
+	if (ones.size() == 4) {
+		moves.push_back({ones[1].ft, ones[1].sc, ones[2].ft, ones[2].sc, ones[3].ft, ones[3].sc});
+		g[r][c+1] = 0;
+		g[r+1][c] = 0;
+		g[r+1][c+1] = 0;
+		zeros.push_back(ones[1]);
+		zeros.push_back(ones[2]);
+		zeros.push_back(ones[3]);
+		ones.pop_back();
+		ones.pop_back();
+		ones.pop_back();
+	}
+
+	while (ones.size() < 3) {
+		auto n = zeros.size();
+		moves.push_back({ones.back().ft, ones.back().sc, zeros[n-1].ft, zeros[n-1].sc, zeros[n-2].ft, zeros[n-2].sc});
+		auto temp = ones.back();
+		ones.pop_back();
+		ones.push_back(zeros[n-1]);
+		ones.push_back(zeros[n-2]);
+		zeros.pop_back();
+		zeros.pop_back();
+		zeros.push_back(temp);
+	}
+
+	moves.push_back({ones[0].ft, ones[0].sc, ones[1].ft, ones[1].sc, ones[2].ft, ones[2].sc});
+	g[r][c] = 0;
+	g[r+1][c] = 0;
+	g[r][c+1] = 0;
+	g[r+1][c+1] = 0;
+}
 
 /******** User-defined Function *******/
-void solve() {
+void solve(vvi &g, int n, int m) {
+	vvi moves;
+	REP(i, n-1) {
+		REP(j, m-1) {
+			if (g[i][j] == 1) fix_square(i, j, g, moves);
+		}
+	}
+	REP(j, m-1) {
+		fix_square(n-2, j, g, moves);
+	}
+	REP(i, n-1) {
+		fix_square(i, m-2, g, moves);
+	}
+	cout << moves.size() << endl;
+	for (auto move : moves) {
+		for (auto c : move) {
+			cout << (c+1) << " ";
+		}
+		cout << endl;
+	}
 
+	/*
+	for (auto r : g) {
+		for (auto rc : r) {
+			cout << rc << " ";
+		}
+		cout << endl;
+	}
+	*/
 }
 
 /**************************************/
@@ -147,8 +250,18 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n, m;
+		cin >> n >> m;
+		vvi g(n, vi(m));
+		for (auto &r : g) {
+			for (auto &rc: r) {
+				char c;
+				cin >> c;
+				if (c == '1') rc = 1;
+				else rc = 0;
+			}
+		}
+		solve(g, n, m);
 	}
 	return 0;
 }

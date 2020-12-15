@@ -51,13 +51,11 @@ typedef pair<ll, ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ld> vld;
-typedef vector<char> vc;
-typedef vector<string> vs;
+typedef vector<string> vc;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 typedef vector<vi> vvi;
 typedef vector<vll> vvll;
-typedef vector<vc> vvc;
 typedef vector<vpii> vvpii;
 typedef vector<vpll> vvpll;
 typedef map<int,int> mpii;
@@ -128,8 +126,31 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+void solve(vvi &g, int n) {
+	vvi lr(10, {n, -1});
+	vvi ud(10, {n, -1});		
+	REP(i, n) {
+		REP(j, n) {
+			int d = g[i][j];
+			amin(lr[d][0], j);
+			amax(lr[d][1], j);
+			amin(ud[d][0], i);
+			amax(ud[d][1], i);
+		}
+	}
 
+	vi ans(10, 0);
+	REP(i, n) {
+		REP(j, n) {
+			int d = g[i][j];
+			amax(ans[d], max(i, n-1-i) * max(j-lr[d][0], lr[d][1]-j));
+			amax(ans[d], max(j, n-1-j) * max(i-ud[d][0], ud[d][1]-i));
+		}
+	}
+	for (auto a : ans) {
+		cout << a << " ";
+	}
+	cout << endl;
 }
 
 /**************************************/
@@ -147,8 +168,16 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n = read(int);
+		vvi g(n, vi(n, 0));
+		for (auto &r : g) {
+			for (auto &c : r) {
+				char ch;
+				cin >> ch;
+				c = ch - '0';
+			}
+		}
+		solve(g, n);
 	}
 	return 0;
 }

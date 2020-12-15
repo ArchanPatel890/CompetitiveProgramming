@@ -51,13 +51,11 @@ typedef pair<ll, ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<ld> vld;
-typedef vector<char> vc;
-typedef vector<string> vs;
+typedef vector<string> vc;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
 typedef vector<vi> vvi;
 typedef vector<vll> vvll;
-typedef vector<vc> vvc;
 typedef vector<vpii> vvpii;
 typedef vector<vpll> vvpll;
 typedef map<int,int> mpii;
@@ -128,8 +126,20 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+void solve(int n, int p, int k, vi &a, int x, int y) {
+	vi cost(n, 0);
+	for (int i = 0; i < k; ++i) {
+		for (int ptr = n-i-1; ptr >= 0; ptr -= k) {
+			if (a[ptr] == 0) cost[ptr]++;
+			if (ptr + k < n) cost[ptr] += cost[ptr+k];
+		}
+	}
 
+	ll ans = numeric_limits<ll>::max();
+	for (int i = 0; i <= n-p; ++i) {
+		amin(ans, i*(1ll)*y + x*(1ll)*cost[i+p-1]);
+	}
+	cout << ans << endl;
 }
 
 /**************************************/
@@ -147,8 +157,17 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n, p, k;
+		cin >> n >> p >> k;
+		vi a(n);
+		for (auto &i : a) {
+			char c;
+			cin >> c;
+			i = c - '0';
+		}
+		int x, y;
+		cin >> x >> y;
+		solve(n, p, k, a, x, y);
 	}
 	return 0;
 }
