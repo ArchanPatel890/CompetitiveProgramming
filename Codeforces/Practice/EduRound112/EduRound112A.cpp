@@ -128,8 +128,15 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
-
+void solve(ll n) {
+	ll ans = 0;
+	if (n <= 6) {
+		ans = 15;
+	}
+	else {
+		ans = (n+1) / 2 * 5;
+	}
+	cout << ans << endl;
 }
 
 /**************************************/
@@ -140,15 +147,16 @@ int main()
 {
 	#ifndef ONLINE_JUDGE
 	file_input;
-	//file_output;
+	file_output;
 	#endif
 
 	int tc;
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		ll n;
+		cin >> n;
+		solve(n);
 	}
 	return 0;
 }

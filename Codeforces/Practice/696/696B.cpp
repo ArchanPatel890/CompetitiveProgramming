@@ -60,8 +60,8 @@ typedef vector<vll> vvll;
 typedef vector<vc> vvc;
 typedef vector<vpii> vvpii;
 typedef vector<vpll> vvpll;
-typedef map<int,int> mapii;
-typedef map<ll,ll> mapll;
+typedef map<int,int> mpii;
+typedef map<ll,ll> mpll;
 typedef set<int> seti;
 typedef set<ll> setll;
 typedef multiset<int> mseti;
@@ -128,8 +128,28 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+vll gen_primes(const int n) {
+	vll lp(n+1, 0);
+	vll pr;
 
+	for (int i=2; i<=n; ++i) {
+		if (lp[i] == 0) {
+			lp[i] = i;
+			pr.push_back (i);
+		}
+		for (int j=0; j<(int)pr.size() && pr[j]<=lp[i] && i*pr[j]<=n; ++j)
+			lp[i * pr[j]] = pr[j];
+	}
+
+	return pr;
+}
+
+void solve(vll primes, ll d) {
+	ll one = 1;
+	ll two = *lower_bound(all(primes), one + d);
+	ll three = *lower_bound(all(primes), two + d);
+	ll ans = two * three;
+	cout << ans << endl;
 }
 
 /**************************************/
@@ -145,10 +165,13 @@ int main()
 
 	int tc;
 	tc = read(int);
-
+	int max_prime = 200000;
+	vll primes = gen_primes(max_prime);
+	
 	while (tc--) {
-		
-		solve();
+		ll d;
+		cin >> d;
+		solve(primes, d);
 	}
 	return 0;
 }

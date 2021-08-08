@@ -128,8 +128,23 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+void solve(int n, vvi a) {
+	int r = a.size();
+	int c = a[0].size();
+	vvi b(r, vi(c+1, 0));
 
+
+	for (int i = 0; i < 2; ++i) {
+		for (int j = 0; j < c; ++j) {
+			b[i][j+1] = b[i][j] + a[i][j];
+		}
+	}
+
+	int ans = INT_MAX;
+	for (int i = 0; i < c; ++i) {
+		amin(ans, max(b[0][n] - b[0][i+1], b[1][i]));
+	}
+	cout << ans << endl;
 }
 
 /**************************************/
@@ -140,15 +155,23 @@ int main()
 {
 	#ifndef ONLINE_JUDGE
 	file_input;
-	//file_output;
+	file_output;
 	#endif
 
 	int tc;
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n;
+		cin >> n;
+		vvi a(2, vi(n));
+		for (auto &a0j : a[0]) {
+			cin >> a0j;
+		}
+		for (auto &a1j : a[1]) {
+			cin >> a1j;
+		}
+		solve(n, a);
 	}
 	return 0;
 }

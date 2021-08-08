@@ -128,8 +128,38 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+void solve(int n, string s, vpii queries) {
+	vi sv(n, 0);
+	REP(i, n) {
+		sv[i] = s[i] - 'a';
+	}
 
+	int comb = 6;
+	vvi cost(comb, vi(n, 0));
+	REP(i, 3) {
+		for (int j = 0; j < n; ++j) {
+			cost[i][j] = (j > 0) ? cost[i][j-1] : 0;
+			if (sv[j] != (i+j) % 3) {
+				cost[i][j] += 1;
+			}
+
+			cost[i+3][j] = (j > 0) ? cost[i+3][j-1] : 0;
+			if (sv[j] != 2 - (i+j) % 3) {
+				cost[i+3][j] += 1;
+			}
+		}
+	}
+
+
+	for (auto q : queries) {
+		int mn = INT_MAX;
+		int l = q.first - 1;
+		int r = q.second - 1;
+		REP(i, comb) {
+			amin(mn, cost[i][r] - ((l > 0) ? cost[i][l-1] : 0));
+		}
+		cout << mn << endl;
+	}
 }
 
 /**************************************/
@@ -140,16 +170,20 @@ int main()
 {
 	#ifndef ONLINE_JUDGE
 	file_input;
-	//file_output;
+	file_output;
 	#endif
 
-	int tc;
-	tc = read(int);
-
-	while (tc--) {
-		
-		solve();
+	int n, m;
+	cin >> n >> m;
+	string s;
+	cin >> s;
+	vpii queries(m);
+	for (auto &p : queries) {
+		cin >> p.first;
+		cin >> p.second;
 	}
+	solve(n, s, queries);
+
 	return 0;
 }
 /********  Main() Ends Here *************/

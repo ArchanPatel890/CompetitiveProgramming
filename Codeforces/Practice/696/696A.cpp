@@ -60,8 +60,8 @@ typedef vector<vll> vvll;
 typedef vector<vc> vvc;
 typedef vector<vpii> vvpii;
 typedef vector<vpll> vvpll;
-typedef map<int,int> mapii;
-typedef map<ll,ll> mapll;
+typedef map<int,int> mpii;
+typedef map<ll,ll> mpll;
 typedef set<int> seti;
 typedef set<ll> setll;
 typedef multiset<int> mseti;
@@ -128,8 +128,14 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+void solve(string s, int n) {
+	string ans(s);
+	REP(i, n) {
+		if (i > 0 && (ans[i-1] + (s[i-1] - '0') == s[i] + 1)) ans[i] = '0';
+		else ans[i] = '1';
+	}
 
+	cout << ans << endl;
 }
 
 /**************************************/
@@ -147,8 +153,11 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n;
+		cin >> n;
+		string s;
+		cin >> s;
+		solve(s, n);
 	}
 	return 0;
 }

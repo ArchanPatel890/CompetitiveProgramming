@@ -60,8 +60,8 @@ typedef vector<vll> vvll;
 typedef vector<vc> vvc;
 typedef vector<vpii> vvpii;
 typedef vector<vpll> vvpll;
-typedef map<int,int> mapii;
-typedef map<ll,ll> mapll;
+typedef map<int,int> mpii;
+typedef map<ll,ll> mpll;
 typedef set<int> seti;
 typedef set<ll> setll;
 typedef multiset<int> mseti;
@@ -128,8 +128,50 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+bool isPossible(mseti cnt, int one, int n, int &init, vpii &out) {
+	int curr = *cnt.rbegin();
+	int x = one + curr;
+	init = x;
+	int target = x - curr;
+	while (cnt.count(target)) {
+		auto t = cnt.find(target);
+		if (t != cnt.end()) cnt.erase(t);
+		else break;
+		
+		auto c = cnt.find(curr);
+		if (c != cnt.end()) cnt.erase(c);
+		else break;
 
+		out.push_back({target, curr});
+		--n;
+
+		if (cnt.size() == 0) break;
+
+		x = curr;
+		curr = *cnt.rbegin();
+		target = x - curr;
+	}
+	return n == 0;
+}
+
+void solve(vi a, int n) {
+	sort(all(a));
+	mseti cnt(all(a));
+	int m = a.size();
+	for (int i = 0; i < m-1; ++i) {
+		int init;
+		vpii out;
+		if (isPossible(cnt, a[i], n, init, out)) {
+			cout << "YES" << endl;
+			cout << init << endl;
+			for (auto p : out) {
+				cout << p.first << " " << p.second << endl;
+			}
+			return;
+		}
+	}
+
+	cout << "NO" << endl;
 }
 
 /**************************************/
@@ -140,15 +182,18 @@ int main()
 {
 	#ifndef ONLINE_JUDGE
 	file_input;
-	//file_output;
+	file_output;
 	#endif
 
 	int tc;
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n;
+		cin >> n;
+		vi a(2*n);
+		for (auto &ai : a) cin >> ai;
+		solve(a, n);
 	}
 	return 0;
 }

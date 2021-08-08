@@ -128,8 +128,20 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+void solve(ll W, ll H, ll x1, ll y1, ll x2, ll y2, ll w, ll h) {
+	ll ans = INF;
+	if (x2 - x1 + w <= W) {
+		ans = min(ans, max(0ll, w - x1));
+		ans = min(ans, max(0ll, x2 - (W - w)));
+	}
+	if (y2 - y1 + h <= H) {
+		ans = min(ans, max(0ll, h - y1));
+		ans = min(ans, max(0ll, y2 - (H - h)));
+	}
+	if (ans == INF)
+		ans = -1;
 
+	cout << double(ans) << endl;
 }
 
 /**************************************/
@@ -140,15 +152,21 @@ int main()
 {
 	#ifndef ONLINE_JUDGE
 	file_input;
-	//file_output;
+	file_output;
 	#endif
+	cout << fixed << setprecision(9);
 
 	int tc;
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		ll W, H;
+		cin >> W >> H;
+		ll x1, y1, x2, y2;
+		cin >> x1 >> y1 >> x2 >> y2;
+		ll w, h;
+		cin >> w >> h;
+		solve(W, H, x1, y1, x2, y2, w, h);
 	}
 	return 0;
 }
