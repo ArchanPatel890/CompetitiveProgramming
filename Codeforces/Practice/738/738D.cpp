@@ -128,7 +128,52 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+
+tuple<vector<int>, vector<int>> create_sets(int n) {
+    vector<int> res(n);
+    iota(res.begin(), res.end(), 0);
+    vector<int> rank(n);
+    return tuple{res, rank};
+}
+
+int root(vector<int> &p, int x) {
+    return x == p[x] ? x : (p[x] = root(p, p[x]));
+}
+
+void unite(vector<int> &p, vector<int> &rank, int a, int b) {
+    a = root(p, a);
+    b = root(p, b);
+    if (a == b)
+        return;
+    if (rank[a] < rank[b])
+        swap(a, b);
+    if (rank[a] == rank[b])
+        ++rank[a];
+    p[b] = a;
+}
+
+
+void solve(int n, vpii e1, vpii e2) {
+	auto [p1, rank1] = create_sets(n);
+	auto [p2, rank2] = create_sets(n);
+	unordered_map<int, seti> g1, g2;
+
+	for (auto p : e1) {
+		int u = p.first - 1;
+		int v = p.second - 1;
+		g1[u].insert(v);
+		g1[v].insert(u);
+		unite(p1, rank1, u, v);
+	}
+
+	for (auto p : e2) {
+		int u = p.first - 1;
+		int v = p.second - 1;
+		g2[u].insert(v);
+		g2[v].insert(u);
+		unite(p2, rank2, u, v);
+	}
+
 
 }
 
@@ -143,13 +188,19 @@ int main()
 	file_output;
 	#endif
 
-	int tc;
-	tc = read(int);
-
-	while (tc--) {
-		
-		solve();
+	int n, m1, m2;
+	cin >> n >> m1 >> m2;
+	vpii e1(m1), e2(m2);
+	for (auto &p : e1) {
+		cin >> p.first;
+		cin >> p.second;
 	}
+	for (auto &p : e2) {
+		cin >> p.first;
+		cin >> p.second;
+	}
+	
+	solve(n, e1, e2);
 	return 0;
 }
 /********  Main() Ends Here *************/

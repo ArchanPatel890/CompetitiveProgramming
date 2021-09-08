@@ -140,7 +140,7 @@ int main()
 {
 	#ifndef ONLINE_JUDGE
 	file_input;
-	file_output;
+	//file_output;
 	#endif
 
 	int tc;

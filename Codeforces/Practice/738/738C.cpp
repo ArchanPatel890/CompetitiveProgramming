@@ -128,8 +128,41 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+void solve(int n, vi &a) {
+	bool valid = false;
+	int idx = 0;
+	list<int> path;
+	for (int i = 1; i <= n; ++i) {
+		path.push_back(i);
+	}
 
+	if (a[0] == 1) {
+		path.push_front(n+1);
+		valid = true;
+	} 
+	else if (a[n-1] == 0) {
+		path.push_back(n+1);
+		valid = true;
+	}
+	
+	list<int>::iterator it = path.begin();
+	for (int i = 0; i < n-1 && !valid; ++i, it++) {
+		if (a[i] == 0 && a[i+1] == 1) {
+			it++;
+			path.insert(it, n+1);
+			valid = true;
+		}
+	}
+
+	if (valid) {
+		for (auto i : path) {
+			cout << i << " ";
+		}
+		cout << endl;
+	}
+	else {
+		cout << -1 << endl;
+	}
 }
 
 /**************************************/
@@ -147,8 +180,11 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n;
+		cin >> n;
+		vi a(n);
+		for (auto &i: a) cin >> i;
+		solve(n, a);
 	}
 	return 0;
 }

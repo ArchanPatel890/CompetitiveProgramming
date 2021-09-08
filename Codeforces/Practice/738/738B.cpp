@@ -128,8 +128,23 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+void solve(int n, string s) {
+	int i = 0;
+	while (i < n && s[i] == '?') {
+		i++;
+	}
 
+	char start = i < n ? s[i] : 'B';
+	for (int j = i-1; j >= 0; j--) {
+		s[j] = s[j+1] == 'R' ? 'B' : 'R';
+	}
+	
+	for (int j = i+1; j < n; ++j) {
+		if (s[j] == '?')
+			s[j] = s[j-1] == 'R' ? 'B' : 'R';
+	}
+
+	cout << s << endl;
 }
 
 /**************************************/
@@ -147,8 +162,11 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n;
+		cin >> n;
+		string s;
+		cin >> s;
+		solve(n, s);
 	}
 	return 0;
 }

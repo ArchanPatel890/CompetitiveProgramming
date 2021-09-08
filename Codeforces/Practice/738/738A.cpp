@@ -128,8 +128,12 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
-
+void solve(int n, vi a) {
+	int ans = a[0];
+	for (auto ai : a) {
+		ans &= ai;
+	}
+	cout << ans << endl;
 }
 
 /**************************************/
@@ -147,8 +151,11 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n;
+		cin >> n;
+		vi a(n);
+		for (auto &i : a) cin >> i;
+		solve(n, a);
 	}
 	return 0;
 }

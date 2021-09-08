@@ -128,8 +128,26 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+void solve(int n, int k, vi a) {
+	vi b(all(a));
+	sort(all(b));
 
+	umapii next;
+	for (int i = 0; i < n-1; ++i) {
+		next[b[i]] = b[i+1];
+	}
+
+	int cnt = 1;
+	for (int i = 0; i < n-1; ++i) {
+		if (!next.count(a[i]) || next[a[i]] != a[i+1]) cnt++;
+	}
+	
+	if (cnt <= k) {
+		cout << "Yes" << endl;
+	}
+	else {
+		cout << "No" << endl;
+	}
 }
 
 /**************************************/
@@ -140,15 +158,18 @@ int main()
 {
 	#ifndef ONLINE_JUDGE
 	file_input;
-	file_output;
+	//file_output;
 	#endif
 
 	int tc;
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n, k;
+		cin >> n >> k;
+		vi a(n);
+		for (auto &ai : a) cin >> ai;
+		solve(n, k, a);
 	}
 	return 0;
 }

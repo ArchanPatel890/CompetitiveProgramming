@@ -128,8 +128,16 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+void solve(int n, vi a) {
+	double sum = 0;
+	double mx = INT_MIN;
+	for (int ai : a) {
+		sum += ai;
+		amax(mx, ai);
+	}
 
+	double ans = mx + (sum - mx) / double (n - 1);
+	cout << ans << endl;
 }
 
 /**************************************/
@@ -140,15 +148,19 @@ int main()
 {
 	#ifndef ONLINE_JUDGE
 	file_input;
-	file_output;
+	//file_output;
 	#endif
+
+	cout << setprecision(9);
 
 	int tc;
 	tc = read(int);
-
 	while (tc--) {
-		
-		solve();
+		int n;
+		cin >> n;
+		vi a(n);
+		for (auto &ai : a) cin >> ai;
+		solve(n, a);
 	}
 	return 0;
 }

@@ -126,10 +126,125 @@ template <typename T> inline T readInt()
 #define debug(x) cerr << #x << "=" << (x) <<'\n'
 /**********************************************/
 
+template <int mod>
+struct modint {
+    int value;
+
+    modint(long long x = 0) { value = normalize(x); }
+
+    int normalize(long long x) {
+        if (x < -mod || x >= mod)
+            x %= mod;
+        if (x < 0)
+            x += mod;
+        return static_cast<int>(x);
+    }
+
+    explicit operator int() const { return value; }
+
+    modint operator-() const { return modint(-value); }
+
+    modint &operator+=(modint rhs) {
+        if ((value += rhs.value) >= mod)
+            value -= mod;
+        return *this;
+    }
+
+    modint &operator-=(modint rhs) {
+        if ((value -= rhs.value) < 0)
+            value += mod;
+        return *this;
+    }
+
+    modint &operator*=(modint rhs) {
+        value = normalize(static_cast<long long>(value) * rhs.value);
+        return *this;
+    }
+
+    modint &operator/=(modint rhs) { return *this *= modint(inverse(rhs.value, mod)); }
+
+    int inverse(int a, int m) {
+        int u = 0, v = 1;
+        while (a != 0) {
+            int t = m / a;
+            m -= t * a;
+            swap(a, m);
+            u -= t * v;
+            swap(u, v);
+        }
+        assert(m == 1);
+        return u;
+    }
+
+    bool operator==(modint rhs) const { return value == rhs.value; }
+
+    bool operator!=(modint rhs) const { return !(*this == rhs); }
+
+    friend modint operator+(modint lhs, modint rhs) { return lhs += rhs; }
+
+    friend modint operator-(modint lhs, modint rhs) { return lhs -= rhs; }
+
+    friend modint operator*(modint lhs, modint rhs) { return lhs *= rhs; }
+
+    friend modint operator/(modint lhs, modint rhs) { return lhs /= rhs; }
+};
+
+constexpr int mod = (int)1e9 + 7;
+using mint = modint<mod>;
+
+
+template <class T>
+T factorial(long long n) {
+    if (n == 0)
+        return 1;
+    T res = 1;
+	for (ll i = 2; i <= n; ++i) {
+		res *= i;
+	}
+
+    return res;
+}
+
+template <class T>
+T binomial(int n, int m) {
+    return factorial<T>(n) / factorial<T>(m) / factorial<T>(n - m);
+}
 
 /******** User-defined Function *******/
-void solve() {
+void solve(int n, int k) {
+    if (k == 0) {
+        cout << 1 << endl;
+        return;
+    }
+	mint with_zero = 0;
+    vector<mint> factorial(n+1, 0);
+    factorial[0] = 1;
+    for (int i = 1; i <= n; ++i) {
+        factorial[i] = factorial[i-1] * i;
+    }
+	for (int i = n-1, j = 0; i >= 0; i-=2, j += 2) {
+		with_zero += factorial[n] / factorial[j] / factorial[n-j];
+	}
+    vector<mint> pow(k+1, 0);
+    pow[0] = 1;
+    mint pow2n = 1;
+    REP(i, n) {
+        pow2n *= 2;
+    }
+    REP(i, k) {
+        pow[i+1] = pow[i] * pow2n;
+    }
 
+    vector<vector<mint>> dp(k, vector<mint>(2, 0));
+    dp[0][0] = with_zero;
+    dp[0][1] = 1;
+    for (int i = 1; i < k; ++i) {
+        dp[i][0] = (dp[i-1][1] + dp[i-1][0]) * with_zero;
+        dp[i][1] = n & 1 ? dp[i-1][0] + dp[i-1][1] : pow[i];
+    }
+
+    mint ans = dp[k-1][0] + dp[k-1][1];
+	cout << (int)ans << endl;
 }
 
 /**************************************/
@@ -147,8 +262,9 @@ int main()
 	tc = read(int);
 
 	while (tc--) {
-		
-		solve();
+		int n, k;
+		cin >> n >> k;
+		solve(n, k);
 	}
 	return 0;
 }
