@@ -53,18 +53,18 @@ void solve() {
 /********** Main()  function **********/
 int main()
 {
-	#ifndef ONLINE_JUDGE
-	freopen("input.txt","r",stdin);
-	//freopen("output.txt","w",stdout);
-	#endif
+  #ifndef ONLINE_JUDGE
+  freopen("input.txt","r",stdin);
+  //freopen("output.txt","w",stdout);
+  #endif
 
-	int tc;
-	cin >> tc;
+  int tc;
+  cin >> tc;
 
-	while (tc--) {
-		
-		solve();
-	}
-	return 0;
+  while (tc--) {
+    
+    solve();
+  }
+  return 0;
 }
 /********  Main() Ends Here *************/

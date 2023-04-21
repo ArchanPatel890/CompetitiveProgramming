@@ -34,12 +34,13 @@ using namespace std;
 #define sc second
 #define mp make_pair
 #define pb push_back
+
 // Constants
 #define INF (int)1e9
 #define EPS 1e-9
 #define PI 3.1415926535897932384626433832795
 const int MOD = 1000000007;
-const double pi=acos(-1.0);
+const double pi=acos(-1.0);	
 // typedefs aliases for common types
 typedef long int int32;
 typedef unsigned long int uint32;
@@ -86,38 +87,38 @@ template<typename T, typename U> inline void amax(T &x, U y) { if (x < y) x = y;
 /****** Template of Fast I/O Methods *********/
 template <typename T> inline void write(T x)
 {
-  int i = 20;
-  char buf[21];
-  // buf[10] = 0;
-  buf[20] = '\n';
+	int i = 20;
+	char buf[21];
+	// buf[10] = 0;
+	buf[20] = '\n';
 
-  do
-  {
-    buf[--i] = x % 10 + '0';
-    x /= 10;
-  } while(x);
-  do
-  {
-    putchar(buf[i]);
-  } while (buf[i++] != '\n');
+	do
+	{
+		buf[--i] = x % 10 + '0';
+		x /= 10;
+	} while(x);
+	do
+	{
+		putchar(buf[i]);
+	} while (buf[i++] != '\n');
 }
 
 template <typename T> inline T readInt()
 {
-  T n = 0, s = 1;
-  char p = getchar();
-  if (p == '-')
-    s = -1;
-  while ((p < '0' || p > '9') && p !=EOF && p != '-')
-    p = getchar();
-  if (p == '-')
-    s = -1 , p = getchar();
-  while (p >= '0' && p <= '9') {
-    n = (n << 3) + (n << 1) + (p - '0');
-    p = getchar();
-  }
+	T n = 0, s = 1;
+	char p = getchar();
+	if (p == '-')
+		s = -1;
+	while ((p < '0' || p > '9') && p !=EOF && p != '-')
+		p = getchar();
+	if (p == '-')
+		s = -1 , p = getchar();
+	while (p >= '0' && p <= '9') {
+		n = (n << 3) + (n << 1) + (p - '0');
+		p = getchar();
+	}
 
-  return n*s;
+	return n*s;
 }
 /************************************/
 
@@ -128,8 +129,32 @@ template <typename T> inline T readInt()
 
 
 /******** User-defined Function *******/
-void solve() {
+ll WindowScore(ll l, ll r, ll n) {
+	ll top = n - l;
+	ll bottom = n - r + 1;
+	ll mod = (top + bottom) % 2;
+	ll wsize = l - r;
+	
+	ll total_score = l * (n - l);
+	total_score += (wsize) * (top + bottom) / 2 + mod * (wsize / 2);
 
+	return total_score;
+}
+
+void solve(vll& a, vpll& q, ll n) {
+	ll ans = 0;
+    for (int i = 1; i <= n; ++i) {
+        ans += (a[i] != a[i + 1]) * (n - (i + 1) + 1) * i;
+    }
+
+	for (auto [i, x] : q) {
+		ans -= (a[i] != a[i - 1]) * (n - i + 1) * (i - 1);
+        ans -= (a[i + 1] != a[i]) * (n - (i + 1) + 1) * i;
+        a[i] = x;
+        ans += (a[i] != a[i - 1]) * (n - i + 1) * (i - 1);
+        ans += (a[i + 1] != a[i]) * (n - (i + 1) + 1) * i;
+        cout << ans + n * (n + 1) / 2 << endl;
+	}
 }
 
 /**************************************/
@@ -138,18 +163,22 @@ void solve() {
 /********** Main()  function **********/
 int main()
 {
-  #ifndef ONLINE_JUDGE
-  file_input;
-  file_output;
-  #endif
+	#ifndef ONLINE_JUDGE
+	file_input;
+	file_output;
+	#endif
 
-  int tc;
-  tc = read(int);
-
-  while (tc--) {
-    
-    solve();
-  }
-  return 0;
+	ll n, m;
+	cin >> n >> m;
+	vll a(n+2, 0);
+	for (int i = 1; i <= n; ++i) {
+		cin >> a[i];
+	}
+	vpll q(m);
+	for (auto& qi : q) {
+		cin >> qi.first >> qi.second;
+	}
+	solve(a, q, n);
+	return 0;
 }
 /********  Main() Ends Here *************/
