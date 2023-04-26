@@ -1,336 +1,191 @@
-/*
- * Note: This template uses some c++11 functions , so you have to compile it with c++11 flag.
- *       Example:-   $ g++ -std=c++11 c++Template.cpp
- */
-
-/********   All Required Header Files ********/
+// Problem: D. The Butcher
+// Contest: Codeforces - Codeforces Round 866 (Div. 2)
+// URL: https://codeforces.com/contest/1820/problem/D
+// Memory Limit: 256 MB
+// Time Limit: 2000 ms
+ 
+#include<iostream>
 #include <bits/stdc++.h>
-
+// #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+// #include <ext/pb_ds/assoc_container.hpp>
+// #include <ext/pb_ds/tree_policy.hpp>
+// using namespace __gnu_pbds;
+//#define ordered_set tree<int, null_type,less_equal<int>, rb_tree_tag,tree_order_statistics_node_update>
+//1. order_of_key(k) : number of elements strictly lesser than k
+//2. find_by_order(k) : k-th element in the set
 using namespace std;
-
-/*******  All Required define Pre-Processors and typedef Constants *******/
-// IO
-#define SCD(t) scanf("%d", &t)
-#define SCLD(t) scanf("%ld", &t)
-#define SCLLD(t) scanf("%lld", &t)
-#define SCC(t) scanf("%c", &t)
-#define SCS(t) scanf("%s", t)
-#define SCF(t) scanf("%f", &t)
-#define SCLF(t) scanf("%lf", &t)
-#define read(type) readInt<type>()
-// Array / Iteration
-#define MEM(a, b) memset(a, (b), sizeof(a))
-#define FOR(i, j, k, in) for (int i = j; i < k; i += in)
-#define RFOR(i, j, k, in) for (int i = j; i >= k; i -= in)
-#define REP(i, j) FOR(i, 0, j, 1)
-#define RREP(i, j) RFOR(i, j, 0, 1)
-#define FOREACH(it, l) for (auto it = l.begin(); it != l.end(); it++)
-#define IN(A, B, C) assert(B <= A && A <= C)
-// Function Aliases
-#define all(cont) cont.begin(), cont.end()
-#define rall(cont) cont.end(), cont.begin()
-#define sz(v) int(v.size())
-#define ft first
-#define sc second
-#define mp make_pair
-#define pb push_back
-// Constants
-#define INF (int)1e9
-#define EPS 1e-9
-#define PI 3.1415926535897932384626433832795
-const int MOD = 1000000007;
-const double pi = acos(-1.0);
-// typedefs aliases for common types
-typedef long int int32;
-typedef unsigned long int uint32;
-typedef long long int ll;
-typedef unsigned long long int ull;
-typedef long double ld;
-typedef pair<int, int> pii;
-typedef pair<ll, ll> pll;
-typedef vector<int> vi;
-typedef vector<ll> vll;
-typedef vector<ld> vld;
-typedef vector<char> vc;
-typedef vector<string> vs;
-typedef vector<pii> vpii;
-typedef vector<pll> vpll;
-typedef vector<vi> vvi;
-typedef vector<vll> vvll;
-typedef vector<vc> vvc;
-typedef vector<vpii> vvpii;
-typedef vector<vpll> vvpll;
-typedef map<int, int> mapii;
-typedef map<ll, ll> mapll;
-typedef set<int> seti;
-typedef set<ll> setll;
-typedef multiset<int> mseti;
-typedef multiset<ll> msetll;
-typedef unordered_map<int, int> umapii;
-typedef unordered_map<ll, ll> umapll;
-// Timing
-clock_t start_time = clock();
-#define current_time fixed << setprecision(6) << (ld)(clock() - start_time) / CLOCKS_PER_SEC
-
-/****** Input / Output Redirection to Files ******/
-#define file_input freopen("input.txt", "r", stdin)
-#define file_output freopen("output.txt", "w", stdout)
-#define file_io \
-  file_input;   \
-  file_output
-#define fast_io                 \
-  ios_base::sync_with_stdio(0); \
-  cin.tie(0)
-
-/****** Template of some basic operations *****/
-template <typename T, typename U>
-inline void amin(T &x, U y)
+#define fio 	   	   ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+#define int        	   long long
+#define rep(karu,mera,gaon)     for(int karu=mera;karu<gaon;karu++)
+#define vi 		   	   vector<int>
+#define pb         	   push_back
+#define mii        	   map<int,int>
+#define all(x)         (x).begin(),(x).end()
+#define endl           '\n' 
+#define mem1(a)        memset(a,-1,sizeof(a))
+#define mem0(a)        memset(a,0,sizeof(a))
+#define pii        	   pair<int,int>
+#define pno            cout<<"NO"<<endl
+#define pys            cout<<"YES"<<endl
+#define fi         	   first
+#define se         	   second
+#define mp             make_pair
+#define setbits(x)     __builtin_popcountll(x)
+#define ctz(x)         __builtin_ctzll(x)
+#define clz(x)         __builtin_clzll(x)
+#define uniq(v)        (v).erase(unique(all(v)),(v).end())
+#define sz(x)          (int)((x).size())
+#define inf        	   3e18//9223372036854775807//2147483647
+#define ld             long double
+#define ps(x,y)        fixed<<setprecision(y)<<x
+                                
+const int mod=1e9+7;//998244353;
+const int MAX=1e6;
+const long double PI=3.14159265359;
+const long double eps=1e-6;                  
+//-10
+ 
+ 
+bool check(int h, int w, multiset<pii>&st1,multiset<pii>&st2)
 {
-  if (y < x)
-    x = y;
+	
+	if(sz(st1)==1)
+	{
+		if(*st1.begin()==mp(h,w))
+		return true;
+		
+		return false;
+	}
+	auto it1 = st1.lower_bound(mp(h,-1));
+	
+	if(it1!=st1.end() && it1->fi==h)
+	{
+		int wi = it1->se;
+		st2.erase(st2.find(mp(it1->se,it1->fi)));
+		
+		st1.erase(it1);
+		
+		
+		
+		return check(h,w-wi,st1,st2);
+	}
+	
+	auto it2 = st2.lower_bound(mp(w,-1));
+	if(it2!=st2.end() && it2->fi==w)
+	{
+		int hi = it2->se;
+		st1.erase(st1.find(mp(it2->se,it2->fi)));
+		st2.erase(it2);
+		
+		return check(h-hi,w,st1,st2);
+	}
+	// if(h==4 && w==5)
+	// {
+		// pys;
+		// //cout<<h-hi<<' '<<w<<endl;
+		// //return true;
+	// }
+	return false;
+	//return true;
 }
-template <typename T, typename U>
-inline void amax(T &x, U y)
+void solve()
 {
-  if (x < y)
-    x = y;
+    fio;
+    int n;cin>>n;
+    multiset<pii>s;
+    multiset<pii>ss;
+    vector<pii> hw(n);
+    rep(i,0,n)
+    {
+    	int h,w;
+    	cin>>h>>w;
+    	s.insert(mp(h,w));
+    	ss.insert(mp(w,h));
+    	hw[i].fi = h;
+    	hw[i].se = w;
+    }
+    
+    
+    
+    set<pii>ans;
+    {
+    	multiset<pii>s1 = s;
+    	int h = 0;
+    	for(auto p:hw)
+    	h = max(h,p.fi);
+    	
+    	int w = 0;
+    	set<pii>rem;
+    	for(auto p:hw)
+    	if(p.fi==h)
+    	{
+    		w += p.se;
+    		rem.insert(p);
+    	}
+    	for(auto p:rem)
+    	s1.erase(p);
+    	
+    	int wmx = 0;
+    	for(auto p:s1)
+    	wmx = max(wmx,p.se);
+    	
+    	w += wmx;
+    	
+    	//cout<<h<<' '<<w<<endl;
+    	multiset<pii>st1 = s;
+    	multiset<pii>st2 = ss;
+    	if(check(h,w,st1,st2))
+    	ans.insert(mp(h,w));
+    }
+    
+    {
+    	multiset<pii>s1 = s;
+    	int w = 0;
+    	for(auto p:hw)
+    	w = max(w,p.se);
+    	
+    	//cout<<w<<endl;
+    	int h = 0;
+    	set<pii>rem;
+    	for(auto p:hw)
+    	if(p.se==w)
+    	{
+    		h += p.fi;
+    		rem.insert(p);
+    	}
+    	for(auto p:rem)
+    	s1.erase(p);
+    	
+    	int hmx = 0;
+    	for(auto p:s1)
+    	hmx = max(hmx,p.fi);
+    	
+    	h += hmx;
+    	multiset<pii>st1 = s;
+    	multiset<pii>st2 = ss;
+    	// for(auto p:st2)
+    	// cout<<p.fi<<' '<<p.se<<endl;
+    	//cout<<h<<' '<<w<<endl;
+    	if(check(h,w,st1,st2))
+    	ans.insert(mp(h,w));
+    }
+    
+    cout<<sz(ans)<<endl;
+    for(auto p:ans)
+    cout<<p.fi<<' '<<p.se<<endl;
+    return;
 }
-/**********************************************/
-
-/****** Template of Fast I/O Methods *********/
-template <typename T>
-inline void write(T x)
-{
-  int i = 20;
-  char buf[21];
-  // buf[10] = 0;
-  buf[20] = '\n';
-
-  do
-  {
-    buf[--i] = x % 10 + '0';
-    x /= 10;
-  } while (x);
-  do
-  {
-    putchar(buf[i]);
-  } while (buf[i++] != '\n');
-}
-
-template <typename T>
-inline T readInt()
-{
-  T n = 0, s = 1;
-  char p = getchar();
-  if (p == '-')
-    s = -1;
-  while ((p < '0' || p > '9') && p != EOF && p != '-')
-    p = getchar();
-  if (p == '-')
-    s = -1, p = getchar();
-  while (p >= '0' && p <= '9')
-  {
-    n = (n << 3) + (n << 1) + (p - '0');
-    p = getchar();
-  }
-
-  return n * s;
-}
-/************************************/
-
-/***************** Debugging ******************/
-#define debug(x) cerr << #x << "=" << (x) << '\n'
-/**********************************************/
-
-/******** User-defined Function *******/
-auto cmph = [](pii a, pii b)
-{
-  return a.first > b.first;
-};
-auto cmpw = [](pii a, pii b)
-{
-  return a.second > b.second;
-};
-
-typedef multiset<pii, decltype(cmph)> set_h;
-typedef multiset<pii, decltype(cmpw)> set_w;
-
-ll HCut(set_h &h, set_w &w, ll &ht, ll &wt)
-{
-  if (w.empty())
-  {
-    if (ht && wt)
-      return -1;
+ 
+ 
+int32_t main(){
+    fio;
+    int t=1;
+    cin>>t;
+    for(int i=1;i<=t;i++)
+    {
+    	//cout<<"Case #"<<i<<": ";
+    	solve();
+    }
     return 0;
-  }
-  if (w.begin()->second != wt)
-    return -1;
-
-  ll height = 0;
-  while (!w.empty() && w.begin()->second == wt)
-  {
-    if (w.begin()->first > ht)
-      return -1;
-
-    height += w.begin()->first;
-    auto cp = *w.begin();
-    w.erase(w.find(cp));
-    h.erase(h.find(cp));
-  }
-  if (height > ht)
-    return -1;
-  ht -= height;
-  return height;
-};
-
-ll VCut(set_h &h, set_w &w, ll &ht, ll &wt)
-{
-  if (h.empty())
-  {
-    if (ht && wt)
-      return -1;
-    return 0;
-  }
-  if (h.begin()->first != ht)
-    return -1;
-
-  ll width = 0;
-  while (!h.empty() && h.begin()->first == ht)
-  {
-    if (h.begin()->second > wt)
-      return -1;
-
-    width += h.begin()->second;
-    auto cp = *h.begin();
-    h.erase(h.find(cp));
-    w.erase(w.find(cp));
-  }
-  if (width > wt)
-    return -1;
-  wt -= width;
-  return width;
 }
-
-void hv(set_h& h, set_w& w, set<pll> &out)
-{
-  // Assume first cut is horizontal.
-  ll width = w.begin()->second;
-  ll height = INT64_MAX;
-  ll wt = w.begin()->second;
-  ll ht = INT64_MAX;
-  bool ok = true;
-
-  ll d_h = HCut(h, w, ht, wt);
-  if (d_h < 0)
-  {
-    ok = false;
-  }
-
-  height = d_h + (h.empty() ? 0 : h.begin()->first);
-  ht = (h.empty() ? 0 : h.begin()->first);
-
-  while (!h.empty())
-  {
-    if (VCut(h, w, ht, wt) < 0)
-    {
-      ok = false;
-      break;
-    }
-    if (HCut(h, w, ht, wt) < 0)
-    {
-      ok = false;
-      break;
-    }
-  }
-
-  if (ok && (!ht || !wt))
-  {
-    out.insert({height, width});
-  }
-}
-
-void vh(set_h& h, set_w& w, set<pll> &out)
-{
-  // Assume first cut is vertical.
-  ll height = h.begin()->first;
-  ll width = INT64_MAX;
-  ll ht = h.begin()->first;
-  ll wt = INT64_MAX;
-  bool ok = true;
-
-  ll d_w = VCut(h, w, ht, wt);
-  if (d_w < 0)
-  {
-    ok = false;
-  }
-
-  width = d_w + (w.empty() ? 0 : w.begin()->second);
-  wt = (w.empty() ? 0 : w.begin()->second);
-
-  while (!w.empty())
-  {
-    if (HCut(h, w, ht, wt) < 0)
-    {
-      ok = false;
-      break;
-    }
-    if (VCut(h, w, ht, wt) < 0)
-    {
-      ok = false;
-      break;
-    }
-  }
-
-  if (ok && (!ht || !wt))
-  {
-    out.insert({height, width});
-  }
-}
-
-void solve(vpii &rect, int n)
-{
-  set_w w(all(rect), cmpw);
-  set_h h(all(rect), cmph);
-
-  set<pll> ans;
-
-  hv(h, w, ans);
-
-  w.insert(all(rect));
-  h.insert(all(rect));
-  vh(h, w, ans);
-
-  cout << ans.size() << endl;
-  for (auto [height, width] : ans)
-  {
-    cout << height << " " << width << endl;
-  }
-}
-
-/**************************************/
-
-/********** Main()  function **********/
-int main()
-{
-#ifndef ONLINE_JUDGE
-  file_input;
-  file_output;
-#endif
-
-  int tc;
-  tc = read(int);
-
-  while (tc--)
-  {
-    int n;
-    cin >> n;
-    vpii rect(n);
-    for (auto &[h, w] : rect)
-    {
-      cin >> h >> w;
-    }
-    solve(rect, n);
-  }
-  return 0;
-}
-/********  Main() Ends Here *************/
