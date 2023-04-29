@@ -174,16 +174,21 @@ typedef vector<pll> vpll;
 typedef vector<vi> vvi;
 typedef vector<vll> vvll;
 typedef vector<vc> vvc;
+typedef vector<vs> vvs;
 typedef vector<vpii> vvpii;
 typedef vector<vpll> vvpll;
 typedef map<int,int> mapii;
 typedef map<ll,ll> mapll;
+typedef map<string, string> mapss;
 typedef set<int> seti;
 typedef set<ll> setll;
+typedef set<string> sets;
 typedef multiset<int> mseti;
 typedef multiset<ll> msetll;
+typedef multiset<string> msets;
 typedef unordered_map<int, int> umapii;
 typedef unordered_map<ll, ll> umapll;
+typedef unordered_map<string, string> umapss;
 // Timing
 clock_t start_time = clock();
 #define current_time fixed<<setprecision(6)<<(ld)(clock()-start_time)/CLOCKS_PER_SEC
