@@ -102,23 +102,9 @@
 #if __cplusplus >= 201703L
 #include <any>
 // #include <execution>
-#include <filesystem>
 #include <optional>
-#include <memory_resource>
 #include <string_view>
 #include <variant>
-#endif
-
-#if __cplusplus > 201703L
-#include <bit>
-#include <compare>
-#include <concepts>
-#include <numbers>
-#include <ranges>
-#include <span>
-#include <stop_token>
-// #include <syncstream>
-#include <version>
 #endif
 
 using namespace std;
