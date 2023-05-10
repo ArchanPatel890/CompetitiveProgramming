@@ -145,16 +145,22 @@ clock_t start_time = clock();
 
 /****** Template of some basic operations *****/
 template <typename T, typename U>
-inline void amin(T &x, U y)
+inline bool amin(T &x, U y)
 {
-  if (y < x)
+  if (y < x) {
     x = y;
+    return true;
+  }
+  return false;
 }
 template <typename T, typename U>
-inline void amax(T &x, U y)
+inline bool amax(T &x, U y)
 {
-  if (x < y)
+  if (x < y) {
     x = y;
+    return true;
+  }
+  return false;
 }
 ll gcd(ll a, ll b) { return b == 0 ? a : gcd(b, a % b); }
 ll lcm(ll a, ll b) { return a / gcd(a, b) * b; }
