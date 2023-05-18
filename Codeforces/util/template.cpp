@@ -162,6 +162,8 @@ inline bool amax(T &x, U y)
   }
   return false;
 }
+#define getbit(i, n) ((n >> i) & 1)
+#define minbit(n) (n & (-n))
 ll gcd(ll a, ll b) { return b == 0 ? a : gcd(b, a % b); }
 ll lcm(ll a, ll b) { return a / gcd(a, b) * b; }
 bool prime(ll a)
@@ -224,10 +226,10 @@ inline T readInt()
 
 /***************** Debugging ******************/
 #ifndef ONLINE_JUDGE
-#define dbg(v)                                                                 \
+#define debug(v)                                                                 \
   cerr << "Line(" << __LINE__ << ") -> " << #v << " = " << (v) << endl;
 #else
-#define dbg(v)
+#define debug(v)
 #endif
 /**********************************************/
 
