@@ -247,6 +247,8 @@ int main()
 #ifndef ONLINE_JUDGE
   file_input;
   file_output;
+#else
+  fast_io;
 #endif
 
   int tc;
